@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ricefs List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .home-button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    .home-button:hover {
+      background-color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-[#0f172a] text-white p-10 min-h-screen">
+ 
+  <!-- HEADER -->
+  <header class="w-full flex items-center justify-between px-6 mb-6 relative">
+    <!-- Home Button - Top Left -->
+    <div class="absolute left-6">
+      <button class="home-button" onclick="goToHomepage()">
+        🏠 Home
+      </button>
+    </div>
+    
+    <div class="mx-auto">
+      <h1 class="text-3xl font-bold text-white text-center">GenAI Amplifier</h1>
+    </div>
+    
+    <div class="absolute right-6">
+      <img src="static/Logo_Global_NTT_DATA_Future_Blue_RGB.png" alt="NTT DATA Logo" class="h-14">
+    </div>
+  </header>
+
+  <!-- WRICEF LIST -->
+  <div class="max-w-4xl mx-auto bg-[#1e293b] p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4 text-center">WRICEF List</h1>
+    <table class="w-full border border-gray-600">
+      <thead>
+        <tr class="bg-[#334155] text-white">
+          <th class="border border-gray-600 p-2">WRICEF Number</th>
+          <th class="border border-gray-600 p-2">Customer Name</th>
+          <th class="border border-gray-600 p-2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in ricefs_list %}
+        <tr class="text-center hover:bg-[#1e293b]/80 transition">
+          <td class="border border-gray-600 p-2">{{ item.ricefw_number }}</td>
+          <td class="border border-gray-600 p-2">{{ item.customer }}</td>
+          <td class="border border-gray-600 p-2">
+            <a href="/view/{{ item.ricefw_number }}?name={{ item.customer | urlencode }}&meetingNotes={{ item.fileText | urlencode | replace('%', '%25') }}&ricefwNumber={{ item.ricefw_number }}"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+              View
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Function to go to homepage
+    function goToHomepage() {
+      window.location.href = '/app';  // Use the correct route path
+    }
+  </script>
+</body>
+</html>

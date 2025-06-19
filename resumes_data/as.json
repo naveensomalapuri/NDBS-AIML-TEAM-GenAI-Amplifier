@@ -1,0 +1,77 @@
+[
+    {
+        "client_problem": "VOC \"Based on our historical sales data, which shows a consistent 10% year-over-year growth, and considering the current market trends towards sustainable products, we forecast a 12% increase in unit sales for the upcoming quarter, with a focus on generating new leads through targeted marketing campaigns to further boost our sales pipeline.\"",
+        "generated_resume": {
+            "project_name": "AI Solution for Business Problem",
+            "RICEF_id": "RICEF-001",
+            "client_name": "as",
+            "Voice_Of_Customer_WHAT_Functional_Description": "What are the essential functions and capabilities this AI solution should have to effectively address our business problem and improve our overall operations?",
+            "Voice_Of_Customer_WHY_Business_Benefit_Need": "What business benefits will this solution provide, and what risks or inefficiencies might arise if this solution is not in place, considering our current market position and future growth plans?",
+            "Voice_Of_Customer_WHO_WHERE": "Who will be the primary users of this solution, and which departments or organizational units will benefit the most from its implementation, taking into account our company's structure and roles?",
+            "Voice_Of_Customer_WHEN": "How often will this solution need to be used, and are there specific times or intervals at which it must operate to ensure maximum efficiency and alignment with our business cycles?",
+            "Voice_Of_Customer_HOW_Input": "What specific data inputs are necessary for this solution, and which fields or data sources are critical for achieving accurate results, given our current data infrastructure and potential integrations?",
+            "Voice_Of_Customer_HOW_Process": "What specific processes, analyses, or computations should the AI solution perform on the input data to produce meaningful results, and how should it handle complex scenarios or exceptions?",
+            "Voice_Of_Customer_HOW_Output": "What should the final output look like, and how should it be formatted or presented to best support our decision-making needs, considering our stakeholders' preferences and the actionability of the insights provided?"
+        },
+        "client_name": "as",
+        "file_name": "as.json"
+    },
+    {
+        "client_problem": "ROC \"Based on our historical sales data, which shows a consistent 10% year-over-year growth, and considering the current market trends towards sustainable products, we forecast a 12% increase in unit sales for the upcoming quarter, with a focus on generating new leads through targeted marketing campaigns to further boost our sales pipeline.\"",
+        "generated_resume": {
+            "project_name": "Interface Development Project",
+            "RICEF_id": "RICEF-001",
+            "client_name": "as",
+            "alternatives_considered": "We considered three alternative approaches: developing a custom interface, using an existing third-party interface, and creating an API-based integration. Each alternative was evaluated based on factors such as cost, development time, scalability, and security.",
+            "agreed_upon_approach": "After careful consideration, we agreed upon developing a custom interface. This approach allows for tailored functionality, better integration with existing systems, and enhanced security features, which are critical for the client's business operations.",
+            "functional_description": "The required interface needs to facilitate seamless data exchange between the client's internal systems and external partners. It should support real-time data synchronization, allow for role-based access control, and provide comprehensive logging and auditing capabilities to ensure data integrity and security.",
+            "business_benefit_need": "Implementing this interface is crucial for the client's business growth and efficiency. It will enable automated data processing, reduce manual errors, and enhance collaboration with external partners. Without this interface, the client would face significant operational inefficiencies, potential data breaches, and increased costs due to manual workarounds.",
+            "important_assumptions": "Key assumptions made during this decision include the availability of necessary resources, the stability of the client's existing infrastructure, and the commitment of all stakeholders to the project timeline. It is also assumed that the development team will have access to all required documentation and support from the client's IT department.",
+            "additional_comments": "Additional considerations included the potential for future expansions or changes in the client's business requirements. The custom interface is designed with scalability and flexibility in mind, allowing for easier adaptation to future needs. Regular review and update cycles will be implemented to ensure the interface remains aligned with the client's evolving business needs."
+        },
+        "client_name": "as"
+    },
+    {
+        "client_problem": "FD \"Based on our historical sales data, which shows a consistent 10% year-over-year growth, and considering the current market trends towards sustainable products, we forecast a 12% increase in unit sales for the upcoming quarter, with a focus on generating new leads through targeted marketing campaigns to further boost our sales pipeline.\"",
+        "generated_resume": {
+            "project_name": "RICEF Project for as",
+            "RICEF_id": "RICEF-001",
+            "client_name": "as",
+            "Functional_Design_Process": "The process will involve data collection from various sources, followed by data processing and analysis. The processed data will then be used to generate reports and visualizations.",
+            "Functional_Design_Interface_Direction": "The data flow will be bi-directional with SAP, allowing for both data input and output.",
+            "Functional_Design_Error_Handling": "Error handling will be done through a combination of automated checks and manual review. The business needs require that all errors be logged and reviewed to ensure data accuracy and integrity.",
+            "Functional_Design_Frequency": "The report will be run on a daily basis, with options for ad-hoc runs as needed.",
+            "Functional_Design_Data_Volume": "The estimated data volume for the report is approximately 100,000 records per day.",
+            "Functional_Design_Security_Requirements": "Security requirements include explicit authorization checks for all users, with special processing for sensitive data.",
+            "Functional_Design_Data_Sensitivity": "The data sensitivity level is high, with restrictions in place to protect sensitive information.",
+            "Functional_Design_Unit_Testing": "Unit testing will involve testing individual components of the report, with instructions and test data provided. Expected results will be compared to actual results to ensure accuracy.",
+            "Functional_Design_Additional_Comments": "Additional information for functional design includes the need for data validation and data normalization to ensure data quality.",
+            "Functional_Design_Rework_Log": "Rework log: Version 1.0 - Initial version. Version 1.1 - Updated error handling process. Version 1.2 - Added data validation and normalization requirements."
+        },
+        "client_name": "as"
+    },
+    {
+        "client_problem": "TD \"Based on our historical sales data, which shows a consistent 10% year-over-year growth, and considering the current market trends towards sustainable products, we forecast a 12% increase in unit sales for the upcoming quarter, with a focus on generating new leads through targeted marketing campaigns to further boost our sales pipeline.\"",
+        "generated_resume": {
+            "project_name": "AS Project",
+            "RICEF_id": "AS-RICEF-001",
+            "client_name": "as",
+            "Technical_Design_Design_Points": "The design points for this project include the development of a data integration process, the creation of a data transformation script, and the implementation of error handling mechanisms.",
+            "Technical_Design_Special_Configuration_Settings": "Special configuration settings for this project include the use of SAP as the target environment and the requirement for data to be transferred in XML format.",
+            "Technical_Design_Outbound_Definition": "The outbound definition for this project includes the structure and format of the data files that will be sent to the target environment, which will be in XML format.",
+            "Technical_Design_Target_Environment": "The target environment for this project is SAP, and the data will be sent to the SAP system for further processing.",
+            "Technical_Design_Starting_Transaction": "The starting transaction for this project is the data integration process, which will be triggered by the arrival of new data in the source environment.",
+            "Technical_Design_Triggering_Events": "The triggering events for this project include the arrival of new data in the source environment and the completion of the data transformation process.",
+            "Technical_Design_Data_Transformation_Process": "The data transformation process for this project will involve the use of a data transformation script to convert the data from the source environment into the required format for the target environment.",
+            "Technical_Design_Data_Transfer_Process": "The data transfer process for this project will involve the use of a secure file transfer protocol to transfer the data from the source environment to the target environment.",
+            "Technical_Design_Data_Format": "The data format for this project is XML, which is the required format for the target environment.",
+            "Technical_Design_Error_Handling": "The error handling for this project will involve the use of a combination of technical and business error handling mechanisms, including the use of error logs and notification emails.",
+            "Technical_Design_Additional_Process_Requirements": "Additional process requirements for this project include the need for data validation and data cleansing to ensure that the data is accurate and complete.",
+            "Technical_Design_Inbound_Definition": "The inbound definition for this project includes the structure and format of the data files that will be received from the source environment, which will be in CSV format.",
+            "Technical_Design_Source_Environment": "The source environment for this project is an external system that provides the data that will be integrated into the target environment.",
+            "Technical_Design_Receiving_Transaction": "The receiving transaction for this project is the data integration process, which will receive the data from the source environment and process it for transfer to the target environment.",
+            "Technical_Design_Rework_Log": "The rework log for this project will contain a record of all changes made to the technical design, including the date, time, and description of each change."
+        },
+        "client_name": "as"
+    }
+]
