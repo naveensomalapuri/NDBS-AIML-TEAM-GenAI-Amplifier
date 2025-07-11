@@ -292,54 +292,19 @@
     <button id="close-menu" class="close-menu">&times;</button>
 
     <div class="menu-section">
-      <h3>Project Version</h3>
-      <a href="#" class="menu-link" onclick="projectVersion()">
-        Version: 0.0.1v
-      </a>
+      <h3>Version: 1.0.0</h3>  
     </div>
-    
-
-<div class="menu-section">
-  <h3>Current Enhancements</h3>
-  <div class="dropdown-container">
-    <button class="dropdown-toggle" id="current-enhancements-toggle">
-      <span>Current Enhancements</span>
-      <span class="dropdown-arrow">▼</span>
-    </button>
-    <div class="dropdown-list" id="current-enhancements-list">
-      <div class="dropdown-item">UI/UX Improvements</div>
-      <div class="dropdown-item">AI Integration</div>
-      <div class="dropdown-item">Performance Optimization</div>
-      <div class="dropdown-item">User Authentication</div>
-      <div class="dropdown-item">API Enhancements</div>
-
-    </div>
-  </div>
-</div>
-
-<div class="menu-section">
-  <h3>Upcoming Enhancements</h3>
-  <div class="dropdown-container">
-    <button class="dropdown-toggle" id="upcoming-enhancements-toggle">
-      <span>Upcoming Enhancements</span>
-      <span class="dropdown-arrow">▼</span>
-    </button>
-    <div class="dropdown-list" id="upcoming-enhancements-list">
-      <div class="dropdown-item">SharePoint Integration</div>
-      <div class="dropdown-item">Post-regeneration section clearing</div>
-      <div class="dropdown-item">Ingesting multiple files</div>
-      <div class="dropdown-item">Automation Features</div>
-    </div>
-  </div>
-</div>
-    
+     
     <div class="menu-section">
-      <h3>Resources</h3>
+      <!-- <h3>Resources</h3> -->
+      <a href="#" class="menu-link" onclick="projectVersion()">
+        Release Document
+      </a>
       <a href="#" class="menu-link" onclick="downloadUserManual()">
-        📄 User Manual (PPT)
+        User Manual
       </a>
       <a href="#" class="menu-link" onclick="openFeedbackForm()">
-        💬 Feedback Form
+        Feedback Form
       </a>
     </div>
   </div>
@@ -357,9 +322,16 @@
   </div>
   <div class="mx-auto">
     <h1 class="text-3xl font-bold text-white text-center mb-4">GenAI Amplifier</h1>
-    <div class="bg-white p-4 rounded-md note-box">
-      <p class="text-lg text-red-700 text-center">NOTE: This is only a PILOT TESTING VERSION. We would appreciate any feedback or suggestion you have after using this version.<br>This will help us improve the tool. Keep an eye for future communication on when the tool goes live.</p>
-    </div>
+<div class="bg-white p-4 rounded-md mx-auto max-w-3xl shadow note-box">
+  <p class="text-red-700 text-left text-base whitespace-pre-line leading-relaxed">
+    NOTE: This is a PILOT TESTING VERSION of the tool. 
+    We welcome your feedback and suggestions to help us improve it further.
+    Stay tuned for updates regarding the official release.
+    Kindly be aware that the content is AI-generated and provided without any warranty regarding its accuracy, completeness, or fitness for a particular purpose.
+  </p>
+</div>
+
+
   </div>
   <div class="absolute right-6 header-logo">
     <!-- Logo from static folder -->
@@ -592,45 +564,11 @@
     // Menu link functions
     function projectVersion() {
       // Replace with actual download link
-      window.open('', '_blank');
+      window.open('https://itellicloud.sharepoint.com/:b:/r/sites/US-saleshub/Shared%20Documents/06-%20Digital%20Innovations%20Internal%20Documents/Artificial%20Intelligence%20and%20Machine%20Learning%20Projects/2024%20-%20Gen%20AI%20Amplifier/GenAI%20Amplifier%20v1.0.0/PDF/Release%20Document%20-%20GenAI%20Amplifier%20v1.0.0.pdf?csf=1&web=1&e=ebCREP', '_blank');
     }
 // Add this JavaScript to your existing <script> section, after the existing menu functions
 
-// Dropdown toggle functionality
-function initializeDropdowns() {
-  const currentEnhancementsToggle = document.getElementById('current-enhancements-toggle');
-  const currentEnhancementsList = document.getElementById('current-enhancements-list');
-  const upcomingEnhancementsToggle = document.getElementById('upcoming-enhancements-toggle');
-  const upcomingEnhancementsList = document.getElementById('upcoming-enhancements-list');
 
-  // Current Enhancements dropdown
-  currentEnhancementsToggle.addEventListener('click', function() {
-    const arrow = this.querySelector('.dropdown-arrow');
-    const isOpen = currentEnhancementsList.classList.contains('open');
-    
-    if (isOpen) {
-      currentEnhancementsList.classList.remove('open');
-      arrow.classList.remove('rotated');
-    } else {
-      currentEnhancementsList.classList.add('open');
-      arrow.classList.add('rotated');
-    }
-  });
-
-  // Upcoming Enhancements dropdown
-  upcomingEnhancementsToggle.addEventListener('click', function() {
-    const arrow = this.querySelector('.dropdown-arrow');
-    const isOpen = upcomingEnhancementsList.classList.contains('open');
-    
-    if (isOpen) {
-      upcomingEnhancementsList.classList.remove('open');
-      arrow.classList.remove('rotated');
-    } else {
-      upcomingEnhancementsList.classList.add('open');
-      arrow.classList.add('rotated');
-    }
-  });
-}
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -640,12 +578,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Menu link functions
     function downloadUserManual() {
       // Replace with actual download link
-      window.open('https://itellicloud.sharepoint.com/:p:/r/sites/US-saleshub/_layouts/15/Doc.aspx?sourcedoc=%7BC88CDC3D-62B5-4320-B09F-249149FBD4E5%7D&file=Gen%20AI%20Amplifier%20-%20User%20Manual_V1.pptx&action=edit&mobileredirect=true', '_blank');
+      window.open('https://itellicloud.sharepoint.com/:b:/r/sites/US-saleshub/Shared%20Documents/06-%20Digital%20Innovations%20Internal%20Documents/Artificial%20Intelligence%20and%20Machine%20Learning%20Projects/2024%20-%20Gen%20AI%20Amplifier/GenAI%20Amplifier%20v1.0.0/PDF/Gen%20AI%20Amplifier%20-%20User%20Manual.pdf?csf=1&web=1&e=xr4I1o', '_blank');
     }
 
     function openFeedbackForm() {
       // Replace with actual feedback form link
-      window.open('https://forms.office.com/Pages/DesignPageV2.aspx?subpage=design&token=654c0658f23a4b999abaa3702d23c41e&id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUN0s4QjI4V1VSVlhUWkU0VDE4VzZDUjBORy4u', '_blank');
+      window.open('https://forms.office.com/Pages/ShareFormPage.aspx?id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUMFc3WlVGSUQ4UkJSNE1EWENGRjRJUEVXSC4u&sharetoken=7W58uO1Lp7fgsIfeJmGA', '_blank');
     }
 
     // Tab functionality
