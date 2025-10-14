@@ -9,26 +9,26 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     .drop-zone {
-      border: 2px dashed #4b5563;
+      border: 2px dashed #cbd5e1;
       padding: 20px;
       text-align: center;
       cursor: pointer;
-      background-color: #1f2937;
+      background-color: #f8fafc;
       transition: background-color 0.3s, border-color 0.3s;
       border-radius: 8px;
-      color: #e5e7eb;
+      color: #475569;
       font-size: 16px;
       position: relative;
     }
     .drop-zone.dragging {
-      background-color: #374151;
-      border-color: #60a5fa;
-      color: #93c5fd;
+      background-color: #e0e7ff;
+      border-color: #3b82f6;
+      color: #1e40af;
     }
     .drop-zone.disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      background-color: #374151;
+      background-color: #e2e8f0;
     }
     .notification-message {
       margin-top: 10px;
@@ -71,7 +71,7 @@
     .hamburger span {
       width: 25px;
       height: 3px;
-      background-color: white;
+      background-color: #1e40af;
       margin: 3px 0;
       transition: 0.3s;
       border-radius: 2px;
@@ -95,7 +95,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(15, 23, 42, 0.7);
       z-index: 999;
       display: none;
     }
@@ -110,11 +110,12 @@
       left: -300px;
       width: 300px;
       height: 100vh;
-      background-color: #1f2937;
+      background-color: #ffffff;
       transition: left 0.3s ease;
       z-index: 1000;
       padding: 20px;
       overflow-y: auto;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
     
     .menu-content.active {
@@ -126,45 +127,45 @@
     }
     
     .menu-section h3 {
-      color: #60a5fa;
+      color: #1e40af;
       font-size: 18px;
       font-weight: bold;
       margin-bottom: 15px;
-      border-bottom: 2px solid #374151;
+      border-bottom: 2px solid #e2e8f0;
       padding-bottom: 8px;
     }
     
     .menu-dropdown {
       width: 100%;
-      background-color: #374151;
-      color: white;
+      background-color: #f1f5f9;
+      color: #1e293b;
       padding: 10px;
       border-radius: 6px;
-      border: 1px solid #4b5563;
+      border: 1px solid #cbd5e1;
       margin-bottom: 10px;
       font-size: 14px;
     }
     
     .menu-dropdown:focus {
       outline: none;
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
     }
     
     .menu-link {
       display: block;
-      color: #e5e7eb;
+      color: #1e293b;
       padding: 12px 16px;
       text-decoration: none;
       border-radius: 6px;
       margin-bottom: 8px;
       transition: background-color 0.3s;
-      border: 1px solid #374151;
+      border: 1px solid #e2e8f0;
     }
     
     .menu-link:hover {
-      background-color: #374151;
-      color: #60a5fa;
+      background-color: #e0e7ff;
+      color: #1e40af;
     }
     
     .close-menu {
@@ -173,14 +174,14 @@
       right: 15px;
       background: none;
       border: none;
-      color: white;
+      color: #1e40af;
       font-size: 24px;
       cursor: pointer;
       padding: 5px;
     }
     
     .close-menu:hover {
-      color: #60a5fa;
+      color: #1e40af;
     }
     
     /* Fix note box positioning */
@@ -209,82 +210,109 @@
       }
     }
 
+    /* Dropdown styles */
+    .dropdown-container {
+      margin-bottom: 10px;
+    }
 
-    /* Add these styles to your existing <style> section */
-.dropdown-container {
-  margin-bottom: 10px;
-}
+    .dropdown-toggle {
+      width: 100%;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
 
-.dropdown-toggle {
-  width: 100%;
-  background-color: #374151;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 6px;
-  border: 1px solid #4b5563;
-  font-size: 14px;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.3s ease;
-}
+    .dropdown-toggle:hover {
+      background-color: #e0e7ff;
+      border-color: #3b82f6;
+    }
 
-.dropdown-toggle:hover {
-  background-color: #4b5563;
-  border-color: #60a5fa;
-}
+    .dropdown-toggle:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
 
-.dropdown-toggle:focus {
-  outline: none;
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
-}
+    .dropdown-arrow {
+      transition: transform 0.3s ease;
+      font-size: 12px;
+    }
 
-.dropdown-arrow {
-  transition: transform 0.3s ease;
-  font-size: 12px;
-}
+    .dropdown-arrow.rotated {
+      transform: rotate(180deg);
+    }
 
-.dropdown-arrow.rotated {
-  transform: rotate(180deg);
-}
+    .dropdown-list {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
 
-.dropdown-list {
-  background-color: #374151;
-  border: 1px solid #4b5563;
-  border-top: none;
-  border-radius: 0 0 6px 6px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
+    .dropdown-list.open {
+      max-height: 200px;
+    }
 
-.dropdown-list.open {
-  max-height: 200px;
-}
+    .dropdown-item {
+      padding: 10px 16px;
+      color: #1e293b;
+      font-size: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      transition: background-color 0.3s ease;
+    }
 
-.dropdown-item {
-  padding: 10px 16px;
-  color: #e5e7eb;
-  font-size: 14px;
-  border-bottom: 1px solid #4b5563;
-  transition: background-color 0.3s ease;
-}
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
 
-.dropdown-item:last-child {
-  border-bottom: none;
-}
+    .dropdown-item:hover {
+      background-color: #e0e7ff;
+      color: #1e40af;
+    }
 
-.dropdown-item:hover {
-  background-color: #4b5563;
-  color: #60a5fa;
-}
+    body {
+      background-color: #f8fafc;
+    }
 
+    input, select, textarea {
+      background-color: #ffffff;
+      border-color: #cbd5e1;
+      color: #1e293b;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    .tab-btn {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+    }
+
+    .tab-btn:hover {
+      background-color: #cbd5e1;
+    }
+
+    .tab-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-6 space-y-6">
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col items-center p-6 space-y-6">
 
 <!-- Menu Overlay -->
 <div id="menu-overlay" class="menu-overlay">
@@ -296,7 +324,6 @@
     </div>
      
     <div class="menu-section">
-      <!-- <h3>Resources</h3> -->
       <a href="#" class="menu-link" onclick="projectVersion()">
         Release Document
       </a>
@@ -311,7 +338,7 @@
 </div>
 
 <!-- HEADER -->
-<header class="w-full flex items-center justify-between px-6 mb-6 relative">
+<header class="w-full flex items-center justify-between px-6 mb-6 relative bg-white border-b border-slate-200 py-6 rounded-lg shadow-sm">
   <div class="absolute left-6">
     <!-- Hamburger Menu Button -->
     <div id="hamburger" class="hamburger">
@@ -321,9 +348,9 @@
     </div>
   </div>
   <div class="mx-auto">
-    <h1 class="text-3xl font-bold text-white text-center mb-4">GenAI Amplifier</h1>
-<div class="bg-white p-4 rounded-md mx-auto max-w-3xl shadow note-box">
-  <p class="text-red-700 text-left text-base whitespace-pre-line leading-relaxed">
+    <h1 class="text-3xl font-bold text-blue-900 text-center mb-4">GenAI Amplifier</h1>
+<div class="bg-blue-50 p-4 rounded-md mx-auto max-w-3xl shadow note-box border border-blue-200">
+  <p class="text-blue-900 text-left text-base whitespace-pre-line leading-relaxed">
     NOTE: This is a PILOT TESTING VERSION of the tool. 
     We welcome your feedback and suggestions to help us improve it further.
     Stay tuned for updates regarding the official release.
@@ -335,34 +362,34 @@
   </div>
   <div class="absolute right-6 header-logo">
     <!-- Logo from static folder -->
-    <img src="/static/Logo_Global_NTT_DATA_Future_Blue_RGB.png" alt="NTT DATA Logo" class="h-14 w-auto object-contain" />
+    <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" class="h-14 w-auto object-contain" />
   </div>
 </header>
 
   <!-- Tabs Navigation -->
   <div class="flex space-x-4 mb-4">
-    <button id="tab1-btn" type="button" onclick="showTab('tab1')" class="tab-btn bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded">Home</button>
-    <button id="tab2-btn" type="button" onclick="showTab('tab2')" class="tab-btn bg-gray-600 hover:bg-indigo-500 px-4 py-2 rounded" disabled>DEV Item Details</button>
-    <button id="tab3-btn" type="button" onclick="showTab('tab3')" class="tab-btn bg-gray-600 hover:bg-indigo-500 px-4 py-2 rounded" disabled>Owner Details</button>
+    <button id="tab1-btn" type="button" onclick="showTab('tab1')" class="tab-btn bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded border-0">Home</button>
+    <button id="tab2-btn" type="button" onclick="showTab('tab2')" class="tab-btn px-4 py-2 rounded" disabled>DEV Item Details</button>
+    <button id="tab3-btn" type="button" onclick="showTab('tab3')" class="tab-btn px-4 py-2 rounded" disabled>Owner Details</button>
   </div>
 
   <form action="/add" method="post" id="mainForm">
     <!-- Tab 1: Home -->
-    <div id="tab1" class="tab-content active w-full max-w-3xl bg-gray-800 p-6 rounded-xl shadow space-y-4">
-      <label class="block text-lg text-white">Upload / Enter the Meeting Notes:</label>
+    <div id="tab1" class="tab-content active w-full max-w-3xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
+      <label class="block text-lg text-slate-900 font-semibold">Upload / Enter the Meeting Notes:</label>
       
       <!-- Text Input Section -->
       <div class="space-y-4">
         <div>
-          <label class="block text-sm text-gray-300 mb-2">Type your meeting notes:</label>
+          <label class="block text-sm text-slate-700 mb-2 font-medium">Type your meeting notes:</label>
           <textarea 
             id="text-input" 
             placeholder="Type your meeting notes here..."
-            class="w-full h-32 bg-gray-700 text-white px-3 py-2 rounded border border-gray-600 resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full h-32 bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         
-        <div class="text-center text-gray-400">OR</div>
+        <div class="text-center text-slate-500 font-medium">OR</div>
         
         <!-- File Drop Zone -->
         <div id="drop-zone" class="drop-zone">
@@ -376,7 +403,7 @@
         <button 
           type="button" 
           id="next-button" 
-          class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed" 
+          class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed font-medium" 
           disabled
         >
           Next
@@ -388,7 +415,7 @@
         <button 
           type="button" 
           id="load-existing-button" 
-          class="bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded text-white"
+          class="bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded text-white font-medium w-full transition-colors"
         >
           Load Existing DEV Item Details
         </button>
@@ -396,11 +423,11 @@
     </div>
 
     <!-- Tab 2: WRICEF Details -->
-    <div id="tab2" class="tab-content w-full max-w-4xl bg-gray-800 p-6 rounded-xl shadow space-y-4">
+    <div id="tab2" class="tab-content w-full max-w-4xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label for="ricefw">Dev Item Type:</label>
-          <select id="ricefw" name="ricefw" class="w-full bg-gray-700 text-white px-3 py-2 rounded">
+          <label for="ricefw" class="block text-sm font-medium text-slate-700 mb-2">Dev Item Type:</label>
+          <select id="ricefw" name="ricefw" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="Interface">Interface</option>
             <option value="Enhancements">Enhancements</option>
             <option value="Reports">Reports</option>
@@ -409,45 +436,45 @@
           </select>
         </div>
         <div>
-          <label for="customer">Customer: <span class="text-red-500">*</span></label>
-          <input type="text" id="customer" name="customer" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Customer Name" required />
+          <label for="customer" class="block text-sm font-medium text-slate-700 mb-2">Customer: <span class="text-red-500">*</span></label>
+          <input type="text" id="customer" name="customer" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Customer Name" required />
         </div>
         <div>
-          <label for="ricefw-number">Dev Item / Issue Number: <span class="text-red-500">*</span></label>
-          <input type="text" id="ricefw-number" name="ricefw-number" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter RICEFW Number" required />
+          <label for="ricefw-number" class="block text-sm font-medium text-slate-700 mb-2">Dev Item / Issue Number: <span class="text-red-500">*</span></label>
+          <input type="text" id="ricefw-number" name="ricefw-number" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter RICEFW Number" required />
         </div>
         <div>
-          <label for="module">Module(s):</label>
-          <input type="text" id="module" name="module" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Module(s)" />
+          <label for="module" class="block text-sm font-medium text-slate-700 mb-2">Module(s):</label>
+          <input type="text" id="module" name="module" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Module(s)" />
         </div>
         <div>
-          <label for="specification">Specification Name:</label>
-          <input type="text" id="specification" name="specification" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Specification Name" />
+          <label for="specification" class="block text-sm font-medium text-slate-700 mb-2">Specification Name:</label>
+          <input type="text" id="specification" name="specification" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Specification Name" />
         </div>
         <div>
-          <label for="description">Brief Description:</label>
-          <input type="text" id="description" name="description" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Brief Description" />
+          <label for="description" class="block text-sm font-medium text-slate-700 mb-2">Brief Description:</label>
+          <input type="text" id="description" name="description" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Brief Description" />
         </div>
         <div>
-          <label for="related-ricefw">Related Dev Items:</label>
-          <input type="text" id="related-ricefw" name="related-ricefw" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Related WRICEF(s)" />
+          <label for="related-ricefw" class="block text-sm font-medium text-slate-700 mb-2">Related Dev Items:</label>
+          <input type="text" id="related-ricefw" name="related-ricefw" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Related WRICEF(s)" />
         </div>
         <div>
-          <label for="created-by">Created By:</label>
-          <input type="text" id="created-by" name="created-by" class="w-full bg-gray-700 text-white px-3 py-2 rounded" placeholder="Enter Your Name" />
+          <label for="created-by" class="block text-sm font-medium text-slate-700 mb-2">Created By:</label>
+          <input type="text" id="created-by" name="created-by" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Your Name" />
         </div>
         <div>
-          <label for="document-date">Document Date:</label>
-          <input type="date" id="document-date" name="document-date" class="w-full bg-gray-700 text-white px-3 py-2 rounded" />
+          <label for="document-date" class="block text-sm font-medium text-slate-700 mb-2">Document Date:</label>
+          <input type="date" id="document-date" name="document-date" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
         <div>
-          <label for="completion-date">Target Completion Date:</label>
-          <input type="date" id="completion-date" name="completion-date" class="w-full bg-gray-700 text-white px-3 py-2 rounded" />
+          <label for="completion-date" class="block text-sm font-medium text-slate-700 mb-2">Target Completion Date:</label>
+          <input type="date" id="completion-date" name="completion-date" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
       </div>
       
       <!-- Instruction for user -->
-      <div class="mt-4 text-right text-sm text-gray-400 italic">
+      <div class="mt-4 text-right text-sm text-slate-600 italic">
         Click 'Continue' upon completion of the Owner Details section.
       </div>
 
@@ -455,7 +482,7 @@
         <button 
           type="button" 
           id="next-to-owner-button" 
-          class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-white disabled:bg-gray-400 disabled:cursor-not-allowed" 
+          class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-white disabled:bg-slate-300 disabled:cursor-not-allowed font-medium transition-colors" 
           disabled
         >
           Next
@@ -464,45 +491,45 @@
     </div>
 
     <!-- Tab 3: Owner Details -->
-    <div id="tab3" class="tab-content w-full max-w-5xl bg-gray-800 p-6 rounded-xl shadow space-y-4">
-      <table class="w-full text-sm text-left text-white">
-        <thead class="bg-gray-700 text-white">
+    <div id="tab3" class="tab-content w-full max-w-5xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
+      <table class="w-full text-sm text-left text-slate-900 border-collapse">
+        <thead class="bg-slate-100 text-slate-900 border-b-2 border-slate-300">
           <tr>
-            <th class="p-2">Role</th>
-            <th class="p-2">Name</th>
-            <th class="p-2">Company / Role</th>
-            <th class="p-2">Email</th>
-            <th class="p-2">Phone #</th>
+            <th class="p-2 font-semibold">Role</th>
+            <th class="p-2 font-semibold">Name</th>
+            <th class="p-2 font-semibold">Company / Role</th>
+            <th class="p-2 font-semibold">Email</th>
+            <th class="p-2 font-semibold">Phone #</th>
           </tr>
         </thead>
-        <tbody class="bg-gray-600">
-          <tr>
-            <td class="p-2">Client Owner (BPO)</td>
-            <td><input type="text" name="client-owner-name" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Name" /></td>
-            <td><input type="text" name="client-owner-company" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Company" /></td>
-            <td><input type="email" name="client-owner-email" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Email" /></td>
-            <td><input type="text" name="client-owner-phone" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Phone #" /></td>
+        <tbody class="bg-white">
+          <tr class="border-b border-slate-200 hover:bg-slate-50">
+            <td class="p-2 font-medium text-slate-700">Client Owner (BPO)</td>
+            <td><input type="text" name="client-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
+            <td><input type="text" name="client-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
+            <td><input type="email" name="client-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
+            <td><input type="text" name="client-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
           </tr>
-          <tr>
-            <td class="p-2">Functional Owner (Consultant)</td>
-            <td><input type="text" name="functional-owner-name" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Name" /></td>
-            <td><input type="text" name="functional-owner-company" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Company" /></td>
-            <td><input type="email" name="functional-owner-email" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Email" /></td>
-            <td><input type="text" name="functional-owner-phone" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Phone #" /></td>
+          <tr class="border-b border-slate-200 hover:bg-slate-50">
+            <td class="p-2 font-medium text-slate-700">Functional Owner (Consultant)</td>
+            <td><input type="text" name="functional-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
+            <td><input type="text" name="functional-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
+            <td><input type="email" name="functional-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
+            <td><input type="text" name="functional-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
           </tr>
-          <tr>
-            <td class="p-2">Technical Owner (Consultant)</td>
-            <td><input type="text" name="technical-owner-name" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Name" /></td>
-            <td><input type="text" name="technical-owner-company" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Company" /></td>
-            <td><input type="email" name="technical-owner-email" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Email" /></td>
-            <td><input type="text" name="technical-owner-phone" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Phone #" /></td>
+          <tr class="border-b border-slate-200 hover:bg-slate-50">
+            <td class="p-2 font-medium text-slate-700">Technical Owner (Consultant)</td>
+            <td><input type="text" name="technical-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
+            <td><input type="text" name="technical-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
+            <td><input type="email" name="technical-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
+            <td><input type="text" name="technical-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
           </tr>
-          <tr>
-            <td class="p-2">Developer</td>
-            <td><input type="text" name="developer-name" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Name" /></td>
-            <td><input type="text" name="developer-company" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Company" /></td>
-            <td><input type="email" name="developer-email" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Email" /></td>
-            <td><input type="text" name="developer-phone" class="w-full bg-gray-700 p-2 rounded" placeholder="Enter Phone #" /></td>
+          <tr class="hover:bg-slate-50">
+            <td class="p-2 font-medium text-slate-700">Developer</td>
+            <td><input type="text" name="developer-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
+            <td><input type="text" name="developer-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
+            <td><input type="email" name="developer-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
+            <td><input type="text" name="developer-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
           </tr>
         </tbody>
       </table>
@@ -516,11 +543,11 @@
       <button 
         type="button"
         id="continue-button"
-        class="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:bg-slate-400 disabled:cursor-not-allowed text-white shadow-lg transition-colors"
         disabled
       >
         <span>Continue</span>
-        <svg class="w-5 h-5 text-white dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
         </svg>
       </button>
@@ -560,30 +587,17 @@
       }
     });
 
-
     // Menu link functions
     function projectVersion() {
-      // Replace with actual download link
       window.open('https://itellicloud.sharepoint.com/:b:/r/sites/US-saleshub/Shared%20Documents/06-%20Digital%20Innovations%20Internal%20Documents/Artificial%20Intelligence%20and%20Machine%20Learning%20Projects/2024%20-%20Gen%20AI%20Amplifier/GenAI%20Amplifier%20v1.0.0/PDF/Release%20Document%20-%20GenAI%20Amplifier%20v1.0.0.pdf?csf=1&web=1&e=ebCREP', '_blank');
     }
-// Add this JavaScript to your existing <script> section, after the existing menu functions
 
-
-
-// Call the function when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  initializeDropdowns();
-});
-
-    // Menu link functions
     function downloadUserManual() {
-      // Replace with actual download link
       window.open('https://itellicloud.sharepoint.com/:b:/r/sites/US-saleshub/Shared%20Documents/06-%20Digital%20Innovations%20Internal%20Documents/Artificial%20Intelligence%20and%20Machine%20Learning%20Projects/2024%20-%20Gen%20AI%20Amplifier/GenAI%20Amplifier%20v1.0.0/PDF/Gen%20AI%20Amplifier%20-%20User%20Manual.pdf?csf=1&web=1&e=xr4I1o', '_blank');
     }
 
     function openFeedbackForm() {
-      // Replace with actual feedback form link
-      window.open('https://forms.office.com/Pages/ShareFormPage.aspx?id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUMFc3WlVGSUQ4UkJSNE1EWENGRjRJUEVXSC4u&sharetoken=7W58uO1Lp7fgsIfeJmGA', '_blank');
+      window.open('https://forms.office.com/Pages/DesignPageV2.aspx?subpage=design&token=654c0658f23a4b999abaa3702d23c41e&id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUN0s4QjI4V1VSVlhUWkU0VDE4VzZDUjBORy4u', '_blank');
     }
 
     // Tab functionality
@@ -608,11 +622,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function showNotification(message, type) {
       notification.textContent = message;
       if (type === 'success') {
-        notification.style.color = '#34d399'; // green in dark theme
+        notification.style.color = '#059669'; // green in light theme
       } else if (type === 'error') {
-        notification.style.color = '#ef4444'; // red in dark theme
+        notification.style.color = '#dc2626'; // red in light theme
       } else {
-        notification.style.color = '#e5e7eb'; // light gray in dark theme
+        notification.style.color = '#64748b'; // slate-500 in light theme
       }
     }
 
@@ -792,8 +806,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Submit button functionality - REMOVED
-
     // Next button functionality (Home to WRICEF Details)
     nextButton.addEventListener('click', () => {
       const meetingNotes = fileContentInput.value.trim();
@@ -803,8 +815,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Enable DEV Item Details tab after Home
         document.getElementById("tab2-btn").disabled = false;
-        document.getElementById("tab2-btn").classList.remove("bg-gray-600");
-        document.getElementById("tab2-btn").classList.add("bg-indigo-600");
+        document.getElementById("tab2-btn").classList.remove("bg-slate-600");
+        document.getElementById("tab2-btn").classList.add("bg-blue-600");
 
       } else {
         showNotification('Please enter meeting notes or upload a file', 'error');
@@ -822,8 +834,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Enable Owner Details tab after WRICEF
         document.getElementById("tab3-btn").disabled = false;
-        document.getElementById("tab3-btn").classList.remove("bg-gray-600");
-        document.getElementById("tab3-btn").classList.add("bg-indigo-600");
+        document.getElementById("tab3-btn").classList.remove("bg-slate-600");
+        document.getElementById("tab3-btn").classList.add("bg-blue-600");
 
       } else {
         showNotification('Please fill in Customer and WRICEF Number fields', 'error');
