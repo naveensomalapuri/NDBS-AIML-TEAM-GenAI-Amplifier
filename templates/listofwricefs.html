@@ -3,11 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ricefs List</title>
+  <title>WRICEF List</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+    body {
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+
+    .tab-content { 
+      display: none; 
+    }
+    
+    .tab-content.active { 
+      display: block; 
+    }
+
     .home-button {
       background-color: #3b82f6;
       color: white;
@@ -18,15 +29,112 @@
       font-weight: 500;
       transition: background-color 0.3s ease;
     }
+
     .home-button:hover {
       background-color: #2563eb;
     }
+
+    .home-button:active {
+      background-color: #1d4ed8;
+    }
+
+    header {
+      background-color: #ffffff;
+      border-bottom: 2px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-container {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background-color: #f1f5f9;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    thead th {
+      color: #1e293b;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      border-right: 1px solid #cbd5e1;
+    }
+
+    thead th:last-child {
+      border-right: none;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #e2e8f0;
+      transition: background-color 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody td {
+      color: #475569;
+      padding: 12px;
+      border-right: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    tbody td:last-child {
+      border-right: none;
+      text-align: center;
+    }
+
+    .view-button {
+      background-color: #3b82f6;
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .view-button:hover {
+      background-color: #2563eb;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .view-button:active {
+      background-color: #1d4ed8;
+    }
+
+    h1 {
+      color: #1e293b;
+    }
+
+    .page-title {
+      color: #1e40af;
+      font-weight: 700;
+    }
   </style>
 </head>
-<body class="bg-[#0f172a] text-white p-10 min-h-screen">
+<body class="bg-slate-50 text-slate-900 p-10 min-h-screen">
  
   <!-- HEADER -->
-  <header class="w-full flex items-center justify-between px-6 mb-6 relative">
+  <header class="w-full flex items-center justify-between px-6 mb-6 relative py-6 rounded-lg">
     <!-- Home Button - Top Left -->
     <div class="absolute left-6">
       <button class="home-button" onclick="goToHomepage()">
@@ -35,47 +143,68 @@
     </div>
     
     <div class="mx-auto">
-      <h1 class="text-3xl font-bold text-white text-center">GenAI Amplifier</h1>
+      <h1 class="text-3xl font-bold text-blue-900 text-center">GenAI Amplifier</h1>
     </div>
     
     <div class="absolute right-6">
-      <img src="static/Logo_Global_NTT_DATA_Future_Blue_RGB.png" alt="NTT DATA Logo" class="h-14">
+      <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" class="h-14">
     </div>
   </header>
 
   <!-- WRICEF LIST -->
-  <div class="max-w-4xl mx-auto bg-[#1e293b] p-6 rounded-lg shadow-lg">
-    <h1 class="text-2xl font-bold mb-4 text-center">WRICEF List</h1>
-    <table class="w-full border border-gray-600">
-      <thead>
-        <tr class="bg-[#334155] text-white">
-          <th class="border border-gray-600 p-2">WRICEF Number</th>
-          <th class="border border-gray-600 p-2">Customer Name</th>
-          <th class="border border-gray-600 p-2">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in ricefs_list %}
-        <tr class="text-center hover:bg-[#1e293b]/80 transition">
-          <td class="border border-gray-600 p-2">{{ item.ricefw_number }}</td>
-          <td class="border border-gray-600 p-2">{{ item.customer }}</td>
-          <td class="border border-gray-600 p-2">
-            <a href="/view/{{ item.ricefw_number }}?name={{ item.customer | urlencode }}&meetingNotes={{ item.fileText | urlencode | replace('%', '%25') }}&ricefwNumber={{ item.ricefw_number }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-              View
-            </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="max-w-4xl mx-auto table-container">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-6 text-center page-title">WRICEF List</h2>
+      
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>WRICEF Number</th>
+              <th>Customer Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in ricefs_list %}
+            <tr>
+              <td>{{ item.ricefw_number }}</td>
+              <td>{{ item.customer }}</td>
+              <td>
+                <a href="/view/{{ item.ricefw_number }}?name={{ item.customer | urlencode }}&meetingNotes={{ item.fileText | urlencode | replace('%', '%25') }}&ricefwNumber={{ item.ricefw_number }}"
+                   class="view-button">
+                  View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state message -->
+      <div id="empty-state" class="text-center py-8" style="display: none;">
+        <p class="text-slate-500 text-lg">No WRICEF items found</p>
+      </div>
+    </div>
   </div>
 
   <script>
     // Function to go to homepage
     function goToHomepage() {
-      window.location.href = '/app';  // Use the correct route path
+      window.location.href = '/app';
     }
+
+    // Check if table is empty
+    document.addEventListener('DOMContentLoaded', function() {
+      const tableBody = document.querySelector('tbody');
+      const rows = tableBody.querySelectorAll('tr');
+      
+      if (rows.length === 0) {
+        document.getElementById('empty-state').style.display = 'block';
+        document.querySelector('table').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
