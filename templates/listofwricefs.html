@@ -3,84 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WRICEF List</title>
+  <title>GenAI Amplifier - DEV Item List</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background-color: #f8fafc;
-      color: #1e293b;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      color: #1a202c;
     }
 
-    .tab-content { 
-      display: none; 
+    /* Header - White with secondary color accents */
+    header.modern-header {
+      background: #ffffff;
+      border-bottom: 3px solid #14b8a6;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
-    
-    .tab-content.active { 
-      display: block; 
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
     .home-button {
-      background-color: #3b82f6;
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
       color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
     }
 
     .home-button:hover {
-      background-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
     }
 
     .home-button:active {
-      background-color: #1d4ed8;
+      transform: translateY(0);
     }
 
-    header {
-      background-color: #ffffff;
-      border-bottom: 2px solid #e2e8f0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    .app-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      letter-spacing: -0.5px;
     }
 
-    .table-container {
-      background-color: #ffffff;
-      border: 1px solid #e2e8f0;
+    #top-logo {
+      height: 50px;
+      object-fit: contain;
       border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Page Title with accent */
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .page-title::before,
+    .page-title::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #14b8a6, transparent);
+      border-radius: 2px;
+    }
+
+    .page-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    /* Table Container */
+    .table-container {
+      background: white;
+      border-radius: 16px;
       overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
     }
 
     thead {
-      background-color: #f1f5f9;
-      border-bottom: 2px solid #cbd5e1;
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     thead th {
-      color: #1e293b;
-      padding: 12px;
+      color: white;
+      padding: 1.25rem 1.5rem;
       text-align: left;
       font-weight: 600;
-      border-right: 1px solid #cbd5e1;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     thead th:last-child {
       border-right: none;
+      text-align: center;
     }
 
     tbody tr {
-      border-bottom: 1px solid #e2e8f0;
-      transition: background-color 0.2s ease;
+      border-bottom: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+      background: white;
     }
 
     tbody tr:hover {
-      background-color: #f8fafc;
+      background: #f0fdfa;
+      transform: scale(1.01);
+      box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
     }
 
     tbody tr:last-child {
@@ -88,10 +170,10 @@
     }
 
     tbody td {
-      color: #475569;
-      padding: 12px;
-      border-right: 1px solid #e2e8f0;
-      text-align: left;
+      color: #374151;
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid #f3f4f6;
+      font-size: 0.95rem;
     }
 
     tbody td:last-child {
@@ -99,65 +181,202 @@
       text-align: center;
     }
 
+    tbody td:first-child {
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    /* View Button */
     .view-button {
-      background-color: #3b82f6;
-      color: #ffffff;
-      padding: 6px 16px;
-      border-radius: 6px;
+      background: linear-gradient(135deg, #a78bfa 0%, #9333ea 100%);
+      color: white;
+      padding: 0.625rem 1.5rem;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 0.3s ease;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
+      font-size: 0.875rem;
     }
 
     .view-button:hover {
-      background-color: #2563eb;
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+      background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
     }
 
     .view-button:active {
-      background-color: #1d4ed8;
+      transform: translateY(0);
     }
 
-    h1 {
-      color: #1e293b;
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      display: none;
     }
 
-    .page-title {
-      color: #1e40af;
-      font-weight: 700;
+    .empty-state.show {
+      display: block;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-text {
+      color: #6b7280;
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-subtext {
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    /* Search and Filter Bar */
+    .controls-bar {
+      background: #f9fafb;
+      padding: 1.5rem;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 2px solid #e5e7eb;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+    }
+
+    .item-count {
+      color: #6b7280;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Loading State */
+    .loading-skeleton {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-left {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+      }
+
+      .app-title {
+        font-size: 1.25rem;
+      }
+
+      #top-logo {
+        height: 40px;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .page-title::before,
+      .page-title::after {
+        width: 30px;
+      }
+
+      thead th {
+        padding: 1rem;
+        font-size: 0.75rem;
+      }
+
+      tbody td {
+        padding: 1rem;
+        font-size: 0.875rem;
+      }
+
+      .controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-input {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 p-10 min-h-screen">
- 
-  <!-- HEADER -->
-  <header class="w-full flex items-center justify-between px-6 mb-6 relative py-6 rounded-lg">
-    <!-- Home Button - Top Left -->
-    <div class="absolute left-6">
+
+<body>
+  <!-- Header -->
+  <header class="modern-header">
+    <div class="header-left">
       <button class="home-button" onclick="goToHomepage()">
-        🏠 Home
+        <span>🏠</span>
+        <span>Home</span>
       </button>
+      <h1 class="app-title">GenAI Amplifier</h1>
     </div>
-    
-    <div class="mx-auto">
-      <h1 class="text-3xl font-bold text-blue-900 text-center">GenAI Amplifier</h1>
-    </div>
-    
-    <div class="absolute right-6">
-      <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" class="h-14">
+    <div>
+      <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" id="top-logo" />
     </div>
   </header>
 
-  <!-- WRICEF LIST -->
-  <div class="max-w-4xl mx-auto table-container">
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-6 text-center page-title">WRICEF List</h2>
-      
-      <div style="overflow-x: auto;">
-        <table>
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="page-header">
+      <h2 class="page-title">DEV Item List</h2>
+      <p class="page-subtitle">Select an item to view and edit details</p>
+    </div>
+
+    <div class="table-container">
+      <!-- Controls Bar -->
+      <div class="controls-bar">
+        <input 
+          type="text" 
+          id="search-input" 
+          class="search-input" 
+          placeholder="🔍 Search by WRICEF Number or Customer Name..."
+          onkeyup="filterTable()"
+        />
+        <div class="item-count" id="item-count">
+          Loading...
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper">
+        <table id="wricef-table">
           <thead>
             <tr>
               <th>WRICEF Number</th>
@@ -165,15 +384,16 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            {% for item in ricefs_list %}
+          <tbody id="table-body">
+            {% for item in ricefs_list | reverse %}
             <tr>
               <td>{{ item.ricefw_number }}</td>
               <td>{{ item.customer }}</td>
               <td>
                 <a href="/view/{{ item.ricefw_number }}?name={{ item.customer | urlencode }}&meetingNotes={{ item.fileText | urlencode | replace('%', '%25') }}&ricefwNumber={{ item.ricefw_number }}"
                    class="view-button">
-                  View
+                  <span>👁️</span>
+                  <span>View</span>
                 </a>
               </td>
             </tr>
@@ -182,12 +402,14 @@
         </table>
       </div>
 
-      <!-- Empty state message -->
-      <div id="empty-state" class="text-center py-8" style="display: none;">
-        <p class="text-slate-500 text-lg">No WRICEF items found</p>
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p class="empty-text">No DEV items found</p>
+        <p class="empty-subtext">Create your first item to get started</p>
       </div>
     </div>
-  </div>
+  </main>
 
   <script>
     // Function to go to homepage
@@ -195,15 +417,70 @@
       window.location.href = '/app';
     }
 
-    // Check if table is empty
-    document.addEventListener('DOMContentLoaded', function() {
-      const tableBody = document.querySelector('tbody');
+    // Update item count
+    function updateItemCount() {
+      const tableBody = document.getElementById('table-body');
       const rows = tableBody.querySelectorAll('tr');
+      const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
+      const itemCount = document.getElementById('item-count');
       
       if (rows.length === 0) {
-        document.getElementById('empty-state').style.display = 'block';
-        document.querySelector('table').style.display = 'none';
+        itemCount.textContent = 'No items';
+        document.getElementById('empty-state').classList.add('show');
+        document.getElementById('wricef-table').style.display = 'none';
+      } else {
+        itemCount.textContent = `${visibleRows.length} of ${rows.length} items`;
+        
+        if (visibleRows.length === 0) {
+          document.getElementById('empty-state').classList.add('show');
+          document.getElementById('empty-state').querySelector('.empty-text').textContent = 'No matching items found';
+          document.getElementById('empty-state').querySelector('.empty-subtext').textContent = 'Try adjusting your search';
+          document.getElementById('wricef-table').style.display = 'none';
+        } else {
+          document.getElementById('empty-state').classList.remove('show');
+          document.getElementById('wricef-table').style.display = 'table';
+        }
       }
+    }
+
+    // Filter table based on search input
+    function filterTable() {
+      const searchInput = document.getElementById('search-input');
+      const filter = searchInput.value.toLowerCase();
+      const tableBody = document.getElementById('table-body');
+      const rows = tableBody.getElementsByTagName('tr');
+
+      for (let i = 0; i < rows.length; i++) {
+        const ricefwNumber = rows[i].getElementsByTagName('td')[0];
+        const customerName = rows[i].getElementsByTagName('td')[1];
+        
+        if (ricefwNumber && customerName) {
+          const ricefwText = ricefwNumber.textContent || ricefwNumber.innerText;
+          const customerText = customerName.textContent || customerName.innerText;
+          
+          if (ricefwText.toLowerCase().indexOf(filter) > -1 || 
+              customerText.toLowerCase().indexOf(filter) > -1) {
+            rows[i].style.display = '';
+          } else {
+            rows[i].style.display = 'none';
+          }
+        }
+      }
+      
+      updateItemCount();
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateItemCount();
+      
+      // Add keyboard shortcut for search (Ctrl/Cmd + K)
+      document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          document.getElementById('search-input').focus();
+        }
+      });
     });
   </script>
 </body>
