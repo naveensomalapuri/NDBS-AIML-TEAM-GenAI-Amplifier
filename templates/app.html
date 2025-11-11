@@ -6,77 +6,57 @@
   <title>GenAI Amplifier</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .drop-zone {
-      border: 2px dashed #cbd5e1;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      background-color: #f8fafc;
-      transition: background-color 0.3s, border-color 0.3s;
-      border-radius: 8px;
-      color: #475569;
-      font-size: 16px;
-      position: relative;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      color: #1a202c;
     }
-    .drop-zone.dragging {
-      background-color: #e0e7ff;
-      border-color: #3b82f6;
-      color: #1e40af;
+
+    /* Header - White with secondary color accents */
+    header.modern-header {
+      background: #ffffff;
+      border-bottom: 3px solid #14b8a6;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
-    .drop-zone.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: #e2e8f0;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
-    .notification-message {
-      margin-top: 10px;
-      font-size: 16px;
-      text-align: center;
-    }
-    #next-button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: not-allowed;
-      transition: background-color 0.3s, cursor 0.3s;
-      background-color: #3b82f6;
-    }
-    #next-button:enabled {
-      cursor: pointer;
-      background-color: #2563eb;
-    }
-    #next-button:hover:enabled {
-      background-color: #1d4ed8;
-    }
-    .text-input-disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    /* Hamburger menu styles */
+
     .hamburger {
       display: flex;
       flex-direction: column;
+      gap: 5px;
       cursor: pointer;
-      padding: 8px;
+      padding: 10px;
+      border-radius: 8px;
       transition: all 0.3s ease;
     }
-    
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background-color: #1e40af;
-      margin: 3px 0;
-      transition: 0.3s;
-      border-radius: 2px;
+
+    .hamburger:hover {
+      background: rgba(20, 184, 166, 0.1);
     }
-    
+
+    .hamburger span {
+      width: 24px;
+      height: 3px;
+      background: #14b8a6;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
     .hamburger.active span:nth-child(1) {
       transform: rotate(-45deg) translate(-5px, 6px);
     }
@@ -88,482 +68,776 @@
     .hamburger.active span:nth-child(3) {
       transform: rotate(45deg) translate(-5px, -6px);
     }
-    
+
+    .app-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      letter-spacing: -0.5px;
+    }
+
+    #top-logo {
+      height: 50px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* Sidebar Menu */
     .menu-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(15, 23, 42, 0.7);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 999;
       display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-    
-    .menu-overlay.active {
-      display: block;
-    }
-    
+    .menu-overlay.active { display: block; opacity: 1; }
+
     .menu-content {
       position: fixed;
       top: 0;
-      left: -300px;
-      width: 300px;
+      left: -320px;
+      width: 320px;
       height: 100vh;
-      background-color: #ffffff;
-      transition: left 0.3s ease;
+      background: white;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
-      padding: 20px;
+      padding: 2rem;
       overflow-y: auto;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+      border-right: 3px solid #14b8a6;
     }
-    
-    .menu-content.active {
-      left: 0;
-    }
-    
+    .menu-content.active { left: 0; }
+
     .menu-section {
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
     }
-    
+
     .menu-section h3 {
-      color: #1e40af;
+      color: #1f2937;
       font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #14b8a6;
     }
-    
-    .menu-dropdown {
-      width: 100%;
-      background-color: #f1f5f9;
-      color: #1e293b;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    
-    .menu-dropdown:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-    }
-    
+
     .menu-link {
-      display: block;
-      color: #1e293b;
-      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #4a5568;
+      padding: 1rem;
       text-decoration: none;
-      border-radius: 6px;
-      margin-bottom: 8px;
-      transition: background-color 0.3s;
-      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      background: white;
     }
-    
     .menu-link:hover {
-      background-color: #e0e7ff;
-      color: #1e40af;
+      background: #f0fdfa;
+      border-color: #5eead4;
+      transform: translateX(4px);
     }
-    
+
     .close-menu {
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 1rem;
+      right: 1rem;
       background: none;
       border: none;
-      color: #1e40af;
-      font-size: 24px;
+      font-size: 32px;
+      color: #14b8a6;
       cursor: pointer;
-      padding: 5px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all 0.2s ease;
     }
-    
     .close-menu:hover {
-      color: #1e40af;
+      background: #f0fdfa;
+      transform: rotate(90deg);
     }
-    
-    /* Fix note box positioning */
-    .note-box {
-      max-width: calc(100% - 200px);
+
+    /* Alert Banner - Orange */
+    .alert-banner {
+      background: #fed7aa;
+      border-left: 4px solid #fb923c;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem auto;
+      border-radius: 12px;
+      max-width: 1400px;
+      color: #7c2d12;
+      box-shadow: 0 2px 8px rgba(251, 146, 60, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Main Container - White background */
+    .main-container {
+      max-width: 1400px;
       margin: 0 auto;
-    }
-    
-    @media (max-width: 1024px) {
-      .note-box {
-        max-width: calc(100% - 120px);
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .note-box {
-        max-width: 100%;
-      }
-      
-      .header-logo {
-        display: none;
-      }
-      
-      .hamburger {
-        display: flex;
-      }
+      padding: 2rem;
+      background: white;
     }
 
-    /* Dropdown styles */
-    .dropdown-container {
-      margin-bottom: 10px;
+    /* Carousel Container */
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .dropdown-toggle {
-      width: 100%;
-      background-color: #f1f5f9;
-      color: #1e293b;
-      padding: 12px 16px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-      text-align: left;
-      cursor: pointer;
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      padding: 2rem;
+    }
+
+    /* Carousel Navigation */
+    .carousel-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 1.5rem 2rem;
+      background: #f9fafb;
+      border-top: 2px solid #e5e7eb;
+      gap: 1rem;
+    }
+
+    .carousel-dots {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d1d5db;
+      cursor: pointer;
       transition: all 0.3s ease;
+      border: 2px solid transparent;
     }
 
-    .dropdown-toggle:hover {
-      background-color: #e0e7ff;
-      border-color: #3b82f6;
+    .carousel-dot:hover {
+      background: #9ca3af;
+      transform: scale(1.2);
     }
 
-    .dropdown-toggle:focus {
+    .carousel-dot.active {
+      background: #14b8a6;
+      width: 16px;
+      height: 16px;
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.2);
+    }
+
+    .carousel-dot.slide-2.active {
+      background: #f59e0b;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+    }
+
+    .carousel-dot.slide-3.active {
+      background: #a78bfa;
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2);
+    }
+
+    .carousel-btn {
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .carousel-btn-prev {
+      background: #6b7280;
+      color: white;
+    }
+
+    .carousel-btn-prev:not(:disabled):hover {
+      background: #4b5563;
+      transform: translateX(-4px);
+    }
+
+    .carousel-btn-next {
+      background: #14b8a6;
+      color: white;
+    }
+
+    .carousel-btn-next:not(:disabled):hover {
+      background: #0d9488;
+      transform: translateX(4px);
+    }
+
+    /* Upload Section */
+    .upload-zone {
+      border: 3px dashed #d1d5db;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      background: #f9fafb;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .upload-zone:hover {
+      border-color: #14b8a6;
+      background: #f0fdfa;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(20, 184, 166, 0.15);
+    }
+
+    .upload-zone.dragging {
+      border-color: #14b8a6;
+      background: #ccfbf1;
+      transform: scale(1.02);
+    }
+
+    .upload-zone.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Textarea */
+    .modern-textarea {
+      width: 100%;
+      min-height: 240px;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background: white;
+      resize: vertical;
+    }
+
+    .modern-textarea:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      border-color: #14b8a6;
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
     }
 
-    .dropdown-arrow {
-      transition: transform 0.3s ease;
-      font-size: 12px;
+    .modern-textarea:disabled {
+      background: #f9fafb;
+      cursor: not-allowed;
     }
 
-    .dropdown-arrow.rotated {
-      transform: rotate(180deg);
+    /* Input Fields */
+    .modern-input, .modern-select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border-radius: 10px;
+      border: 2px solid #e5e7eb;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: white;
     }
 
-    .dropdown-list {
-      background-color: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-top: none;
-      border-radius: 0 0 6px 6px;
-      max-height: 0;
+    .modern-input:focus, .modern-select:focus {
+      outline: none;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    /* Grid Layout */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 968px) {
+      .grid-2col { grid-template-columns: 1fr; }
+    }
+
+    /* File List */
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 12px;
+      margin-top: 1rem;
+      border: 1px solid #e5e7eb;
+    }
+
+    .file-name {
+      flex: 1;
+      color: #1f2937;
+      font-weight: 500;
+    }
+
+    .remove-file {
+      color: #f97316;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .remove-file:hover {
+      background: #ffedd5;
+    }
+
+    /* Continue Button - Lavender */
+    .continue-btn {
+      position: fixed;
+      right: 2rem;
+      bottom: 2rem;
+      background: #a78bfa;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+      cursor: not-allowed;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .continue-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .continue-btn:not(:disabled) {
+      cursor: pointer;
+      opacity: 1;
+    }
+
+    .continue-btn:not(:disabled):hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(167, 139, 250, 0.5);
+      background: #9333ea;
+    }
+
+    /* Load Existing Button */
+    .load-existing-btn {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin: 2rem auto 0;
+      padding: 1rem 1.5rem;
+      border-radius: 14px;
+      border: 2px solid #e5e7eb;
+      background: white;
+      color: #1f2937;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .load-existing-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border-color: #14b8a6;
+      background: #f0fdfa;
+      color: #115e59;
+    }
+
+    /* Table - Secondary colors header */
+    .modern-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
-    .dropdown-list.open {
-      max-height: 200px;
+    .modern-table thead {
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      color: white;
     }
 
-    .dropdown-item {
-      padding: 10px 16px;
-      color: #1e293b;
-      font-size: 14px;
-      border-bottom: 1px solid #e2e8f0;
-      transition: background-color 0.3s ease;
+    .modern-table th {
+      padding: 1rem;
+      font-weight: 600;
+      text-align: left;
     }
 
-    .dropdown-item:last-child {
+    .modern-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .modern-table tbody tr {
+      background: white;
+      transition: all 0.2s ease;
+    }
+
+    .modern-table tbody tr:hover {
+      background: #f0fdfa;
+    }
+
+    .modern-table tbody tr:last-child td {
       border-bottom: none;
     }
 
-    .dropdown-item:hover {
-      background-color: #e0e7ff;
-      color: #1e40af;
+    /* Section Label with color accent */
+    .section-label {
+      font-size: 1.25rem;
+      color: #1f2937;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    body {
-      background-color: #f8fafc;
+    .section-label::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: #14b8a6;
+      border-radius: 2px;
     }
 
-    input, select, textarea {
-      background-color: #ffffff;
-      border-color: #cbd5e1;
-      color: #1e293b;
+    .slide-2 .section-label::before {
+      background: #f59e0b;
     }
 
-    input::placeholder, textarea::placeholder {
-      color: #94a3b8;
+    .slide-3 .section-label::before {
+      background: #a78bfa;
     }
 
-    .tab-btn {
-      background-color: #e2e8f0;
-      color: #1e293b;
-      border: 1px solid #cbd5e1;
+    .field-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
     }
 
-    .tab-btn:hover {
-      background-color: #cbd5e1;
+    .required {
+      color: #f97316;
     }
 
-    .tab-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .hint-text {
+      color: #6b7280;
+      font-size: 0.875rem;
+      font-style: italic;
+      margin-top: 1rem;
+      text-align: right;
+    }
+
+    .notification-msg {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .hidden { display: none; }
+
+    @media (max-width: 768px) {
+      .header-logo {
+        display: none;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col items-center p-6 space-y-6">
 
-<!-- Menu Overlay -->
-<div id="menu-overlay" class="menu-overlay">
-  <div id="menu-content" class="menu-content">
-    <button id="close-menu" class="close-menu">&times;</button>
+<body>
+  <!-- Sidebar Menu -->
+  <div id="menu-overlay" class="menu-overlay" aria-hidden="true">
+    <div id="menu-content" class="menu-content" aria-hidden="true">
+      <button id="close-menu" class="close-menu">&times;</button>
 
-    <div class="menu-section">
-      <h3>Version: 1.0.0</h3>  
-    </div>
-     
-    <div class="menu-section">
-      <a href="#" class="menu-link" onclick="projectVersion()">
-        Release Document
-      </a>
-      <a href="#" class="menu-link" onclick="downloadUserManual()">
-        User Manual
-      </a>
-      <a href="#" class="menu-link" onclick="openFeedbackForm()">
-        Feedback Form
-      </a>
+      <div class="menu-section">
+        <h3>Version: 1.0.0</h3>
+      </div>
+
+      <div class="menu-section">
+        <a href="#" class="menu-link" onclick="projectVersion()">
+          <span>📄</span>
+          <span>Release Document</span>
+        </a>
+        <a href="#" class="menu-link" onclick="downloadUserManual()">
+          <span>📚</span>
+          <span>User Manual</span>
+        </a>
+        <a href="#" class="menu-link" onclick="openFeedbackForm()">
+          <span>💬</span>
+          <span>Feedback Form</span>
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- HEADER -->
-<header class="w-full flex items-center justify-between px-6 mb-6 relative bg-white border-b border-slate-200 py-6 rounded-lg shadow-sm">
-  <div class="absolute left-6">
-    <!-- Hamburger Menu Button -->
-    <div id="hamburger" class="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
+  <!-- Header -->
+  <header class="modern-header">
+    <div class="header-left">
+      <div id="hamburger" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h1 class="app-title">GenAI Amplifier</h1>
+    </div>
+    <div class="header-logo">
+      <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" style="height: 50px; object-fit: contain;" />
+    </div>
+  </header>
+
+  <!-- Alert Banner -->
+  <div class="alert-banner" role="status" aria-live="polite">
+    <div style="font-size: 1.5rem;">⚠️</div>
+    <div>
+      <strong>NOTE:</strong> This is a PILOT TESTING VERSION of the tool. We welcome your feedback and suggestions to help us improve it further. Stay tuned for updates regarding the official release. Kindly be aware that the content is AI-generated and provided without any warranty regarding its accuracy, completeness, or fitness for a particular purpose.
     </div>
   </div>
-  <div class="mx-auto">
-    <h1 class="text-3xl font-bold text-blue-900 text-center mb-4">GenAI Amplifier</h1>
-<div class="bg-blue-50 p-4 rounded-md mx-auto max-w-3xl shadow note-box border border-blue-200">
-  <p class="text-blue-900 text-left text-base whitespace-pre-line leading-relaxed">
-    NOTE: This is a PILOT TESTING VERSION of the tool. 
-    We welcome your feedback and suggestions to help us improve it further.
-    Stay tuned for updates regarding the official release.
-    Kindly be aware that the content is AI-generated and provided without any warranty regarding its accuracy, completeness, or fitness for a particular purpose.
-  </p>
-</div>
 
+  <!-- Main Content -->
+  <main class="main-container">
+    <form action="/add" method="post" id="mainForm">
+      <!-- Carousel -->
+      <div class="carousel-wrapper">
+        <div class="carousel-container" id="carousel-container">
+          
+          <!-- Slide 1: Home -->
+          <div class="carousel-slide slide-1">
+            <div class="section-label">Upload / Enter Meeting Notes</div>
 
-  </div>
-  <div class="absolute right-6 header-logo">
-    <!-- Logo from static folder -->
-    <img src="static/GlobalLogo_NTTDATA_Black_RGB.png" alt="NTT DATA Logo" class="h-14 w-auto object-contain" />
-  </div>
-</header>
+            <div class="grid-2col">
+              <!-- Text Input -->
+              <div>
+                <label class="field-label">Type your meeting notes:</label>
+                <textarea id="text-input" placeholder="Type your meeting notes here..." class="modern-textarea"></textarea>
+              </div>
 
-  <!-- Tabs Navigation -->
-  <div class="flex space-x-4 mb-4">
-    <button id="tab1-btn" type="button" onclick="showTab('tab1')" class="tab-btn bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded border-0">Home</button>
-    <button id="tab2-btn" type="button" onclick="showTab('tab2')" class="tab-btn px-4 py-2 rounded" disabled>DEV Item Details</button>
-    <button id="tab3-btn" type="button" onclick="showTab('tab3')" class="tab-btn px-4 py-2 rounded" disabled>Owner Details</button>
-  </div>
+              <!-- File Upload -->
+              <div>
+                <label class="field-label">Upload Meeting Notes</label>
+                <div id="drop-zone" class="upload-zone" role="button" tabindex="0">
+                  <div class="upload-icon">📁</div>
+                  <p id="drop-zone-text" style="margin-bottom: 0.5rem; color: #374151; font-weight: 500;">
+                    Drag & drop your meeting notes (.txt) file here, or click to upload
+                  </p>
+                  <p style="color: #6b7280; font-size: 0.875rem;">Supported format: TXT only</p>
+                  <input id="file-input" type="file" class="hidden" accept=".txt" />
+                  <div id="notification" class="notification-msg"></div>
+                </div>
+                <div id="fileList"></div>
+              </div>
+            </div>
 
-  <form action="/add" method="post" id="mainForm">
-    <!-- Tab 1: Home -->
-    <div id="tab1" class="tab-content active w-full max-w-3xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
-      <label class="block text-lg text-slate-900 font-semibold">Upload / Enter the Meeting Notes:</label>
-      
-      <!-- Text Input Section -->
-      <div class="space-y-4">
-        <div>
-          <label class="block text-sm text-slate-700 mb-2 font-medium">Type your meeting notes:</label>
-          <textarea 
-            id="text-input" 
-            placeholder="Type your meeting notes here..."
-            class="w-full h-32 bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 resize-vertical focus:outline-none focus:ring-2 focus:ring-blue-500"
-          ></textarea>
+            <button id="load-existing-button" type="button" class="load-existing-btn">
+              📂 Load Existing DEV Item Details
+            </button>
+          </div>
+
+          <!-- Slide 2: DEV Item Details -->
+          <div class="carousel-slide slide-2">
+            <div class="section-label">DEV Item Details</div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div>
+                <label for="ricefw" class="field-label">Dev Item Type:</label>
+                <select id="ricefw" name="ricefw" class="modern-select">
+                  <option value="Interface">Interface</option>
+                  <option value="Enhancements">Enhancements</option>
+                  <option value="Reports">Reports</option>
+                  <option value="Forms">Forms</option>
+                  <option value="Workflow">Workflow</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="customer" class="field-label">Customer: <span class="required">*</span></label>
+                <input type="text" id="customer" name="customer" class="modern-input" placeholder="Enter Customer Name" required />
+              </div>
+
+              <div>
+                <label for="ricefw-number" class="field-label">Dev Item / Issue Number: <span class="required">*</span></label>
+                <input type="text" id="ricefw-number" name="ricefw-number" class="modern-input" placeholder="Enter RICEFW Number" required />
+              </div>
+
+              <div>
+                <label for="module" class="field-label">Module(s):</label>
+                <input type="text" id="module" name="module" class="modern-input" placeholder="Enter Module(s)" />
+              </div>
+
+              <div>
+                <label for="specification" class="field-label">Specification Name:</label>
+                <input type="text" id="specification" name="specification" class="modern-input" placeholder="Enter Specification Name" />
+              </div>
+
+              <div>
+                <label for="description" class="field-label">Brief Description:</label>
+                <input type="text" id="description" name="description" class="modern-input" placeholder="Enter Brief Description" />
+              </div>
+
+              <div>
+                <label for="related-ricefw" class="field-label">Related Dev Items:</label>
+                <input type="text" id="related-ricefw" name="related-ricefw" class="modern-input" placeholder="Enter Related WRICEF(s)" />
+              </div>
+
+              <div>
+                <label for="created-by" class="field-label">Created By:</label>
+                <input type="text" id="created-by" name="created-by" class="modern-input" placeholder="Enter Your Name" />
+              </div>
+
+              <div>
+                <label for="document-date" class="field-label">Document Date:</label>
+                <input type="date" id="document-date" name="document-date" class="modern-input" />
+              </div>
+
+              <div>
+                <label for="completion-date" class="field-label">Target Completion Date:</label>
+                <input type="date" id="completion-date" name="completion-date" class="modern-input" />
+              </div>
+            </div>
+
+            <div class="hint-text">
+              Click 'Continue' upon completion of the Owner Details section.
+            </div>
+          </div>
+
+          <!-- Slide 3: Owner Details -->
+          <div class="carousel-slide slide-3">
+            <div class="section-label">Owner Details</div>
+
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Name</th>
+                  <th>Company / Role</th>
+                  <th>Email</th>
+                  <th>Phone #</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600; color: #1f2937;">Client Owner (BPO)</td>
+                  <td><input type="text" name="client-owner-name" class="modern-input" placeholder="Enter Name" /></td>
+                  <td><input type="text" name="client-owner-company" class="modern-input" placeholder="Enter Company" /></td>
+                  <td><input type="email" name="client-owner-email" class="modern-input" placeholder="Enter Email" /></td>
+                  <td><input type="text" name="client-owner-phone" class="modern-input" placeholder="Enter Phone #" /></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #1f2937;">Functional Owner (Consultant)</td>
+                  <td><input type="text" name="functional-owner-name" class="modern-input" placeholder="Enter Name" /></td>
+                  <td><input type="text" name="functional-owner-company" class="modern-input" placeholder="Enter Company" /></td>
+                  <td><input type="email" name="functional-owner-email" class="modern-input" placeholder="Enter Email" /></td>
+                  <td><input type="text" name="functional-owner-phone" class="modern-input" placeholder="Enter Phone #" /></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #1f2937;">Technical Owner (Consultant)</td>
+                  <td><input type="text" name="technical-owner-name" class="modern-input" placeholder="Enter Name" /></td>
+                  <td><input type="text" name="technical-owner-company" class="modern-input" placeholder="Enter Company" /></td>
+                  <td><input type="email" name="technical-owner-email" class="modern-input" placeholder="Enter Email" /></td>
+                  <td><input type="text" name="technical-owner-phone" class="modern-input" placeholder="Enter Phone #" /></td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; color: #1f2937;">Developer</td>
+                  <td><input type="text" name="developer-name" class="modern-input" placeholder="Enter Name" /></td>
+                  <td><input type="text" name="developer-company" class="modern-input" placeholder="Enter Company" /></td>
+                  <td><input type="email" name="developer-email" class="modern-input" placeholder="Enter Email" /></td>
+                  <td><input type="text" name="developer-phone" class="modern-input" placeholder="Enter Phone #" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
-        
-        <div class="text-center text-slate-500 font-medium">OR</div>
-        
-        <!-- File Drop Zone -->
-        <div id="drop-zone" class="drop-zone">
-          <p>Drag & drop your meeting notes (.txt) file here, or click to upload</p>
-          <input id="file-input" type="file" class="hidden" accept=".txt" />
-          <div id="notification" class="notification-message"></div>
+
+        <!-- Carousel Navigation -->
+        <div class="carousel-nav">
+          <button type="button" id="carousel-prev" class="carousel-btn carousel-btn-prev" disabled>
+            ← Previous
+          </button>
+          
+          <div class="carousel-dots" id="carousel-dots">
+            <div class="carousel-dot active slide-1" data-slide="0"></div>
+            <div class="carousel-dot slide-2" data-slide="1"></div>
+            <div class="carousel-dot slide-3" data-slide="2"></div>
+          </div>
+          
+          <button type="button" id="carousel-next" class="carousel-btn carousel-btn-next" disabled>
+            Next →
+          </button>
         </div>
       </div>
-      
-      <div class="flex justify-center">
-        <button 
-          type="button" 
-          id="next-button" 
-          class="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed font-medium" 
-          disabled
-        >
-          Next
-        </button>
-      </div>
-    
-      <!-- Load Existing WRICEF Button -->
-      <div class="pt-4">
-        <button 
-          type="button" 
-          id="load-existing-button" 
-          class="bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded text-white font-medium w-full transition-colors"
-        >
-          Load Existing DEV Item Details
-        </button>
-      </div>
-    </div>
 
-    <!-- Tab 2: WRICEF Details -->
-    <div id="tab2" class="tab-content w-full max-w-4xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label for="ricefw" class="block text-sm font-medium text-slate-700 mb-2">Dev Item Type:</label>
-          <select id="ricefw" name="ricefw" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="Interface">Interface</option>
-            <option value="Enhancements">Enhancements</option>
-            <option value="Reports">Reports</option>
-            <option value="Forms">Forms</option>
-            <option value="Workflow">Workflow</option>
-          </select>
-        </div>
-        <div>
-          <label for="customer" class="block text-sm font-medium text-slate-700 mb-2">Customer: <span class="text-red-500">*</span></label>
-          <input type="text" id="customer" name="customer" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Customer Name" required />
-        </div>
-        <div>
-          <label for="ricefw-number" class="block text-sm font-medium text-slate-700 mb-2">Dev Item / Issue Number: <span class="text-red-500">*</span></label>
-          <input type="text" id="ricefw-number" name="ricefw-number" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter RICEFW Number" required />
-        </div>
-        <div>
-          <label for="module" class="block text-sm font-medium text-slate-700 mb-2">Module(s):</label>
-          <input type="text" id="module" name="module" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Module(s)" />
-        </div>
-        <div>
-          <label for="specification" class="block text-sm font-medium text-slate-700 mb-2">Specification Name:</label>
-          <input type="text" id="specification" name="specification" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Specification Name" />
-        </div>
-        <div>
-          <label for="description" class="block text-sm font-medium text-slate-700 mb-2">Brief Description:</label>
-          <input type="text" id="description" name="description" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Brief Description" />
-        </div>
-        <div>
-          <label for="related-ricefw" class="block text-sm font-medium text-slate-700 mb-2">Related Dev Items:</label>
-          <input type="text" id="related-ricefw" name="related-ricefw" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Related WRICEF(s)" />
-        </div>
-        <div>
-          <label for="created-by" class="block text-sm font-medium text-slate-700 mb-2">Created By:</label>
-          <input type="text" id="created-by" name="created-by" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Your Name" />
-        </div>
-        <div>
-          <label for="document-date" class="block text-sm font-medium text-slate-700 mb-2">Document Date:</label>
-          <input type="date" id="document-date" name="document-date" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        </div>
-        <div>
-          <label for="completion-date" class="block text-sm font-medium text-slate-700 mb-2">Target Completion Date:</label>
-          <input type="date" id="completion-date" name="completion-date" class="w-full bg-white text-slate-900 px-3 py-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        </div>
-      </div>
-      
-      <!-- Instruction for user -->
-      <div class="mt-4 text-right text-sm text-slate-600 italic">
-        Click 'Continue' upon completion of the Owner Details section.
-      </div>
+      <input type="hidden" name="fileText" id="file-text">
+    </form>
 
-      <div class="flex justify-end">
-        <button 
-          type="button" 
-          id="next-to-owner-button" 
-          class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-white disabled:bg-slate-300 disabled:cursor-not-allowed font-medium transition-colors" 
-          disabled
-        >
-          Next
-        </button>
-      </div>
-    </div>
+    <!-- Continue Button -->
+    <button id="continue-button" type="button" class="continue-btn" disabled>
+      <span>Continue</span>
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+      </svg>
+    </button>
+  </main>
 
-    <!-- Tab 3: Owner Details -->
-    <div id="tab3" class="tab-content w-full max-w-5xl bg-white p-6 rounded-xl shadow border border-slate-200 space-y-4">
-      <table class="w-full text-sm text-left text-slate-900 border-collapse">
-        <thead class="bg-slate-100 text-slate-900 border-b-2 border-slate-300">
-          <tr>
-            <th class="p-2 font-semibold">Role</th>
-            <th class="p-2 font-semibold">Name</th>
-            <th class="p-2 font-semibold">Company / Role</th>
-            <th class="p-2 font-semibold">Email</th>
-            <th class="p-2 font-semibold">Phone #</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white">
-          <tr class="border-b border-slate-200 hover:bg-slate-50">
-            <td class="p-2 font-medium text-slate-700">Client Owner (BPO)</td>
-            <td><input type="text" name="client-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
-            <td><input type="text" name="client-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
-            <td><input type="email" name="client-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
-            <td><input type="text" name="client-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
-          </tr>
-          <tr class="border-b border-slate-200 hover:bg-slate-50">
-            <td class="p-2 font-medium text-slate-700">Functional Owner (Consultant)</td>
-            <td><input type="text" name="functional-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
-            <td><input type="text" name="functional-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
-            <td><input type="email" name="functional-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
-            <td><input type="text" name="functional-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
-          </tr>
-          <tr class="border-b border-slate-200 hover:bg-slate-50">
-            <td class="p-2 font-medium text-slate-700">Technical Owner (Consultant)</td>
-            <td><input type="text" name="technical-owner-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
-            <td><input type="text" name="technical-owner-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
-            <td><input type="email" name="technical-owner-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
-            <td><input type="text" name="technical-owner-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="p-2 font-medium text-slate-700">Developer</td>
-            <td><input type="text" name="developer-name" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Name" /></td>
-            <td><input type="text" name="developer-company" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Company" /></td>
-            <td><input type="email" name="developer-email" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Email" /></td>
-            <td><input type="text" name="developer-phone" class="w-full bg-white text-slate-900 p-2 rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter Phone #" /></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Hidden input for file text -->
-    <input type="hidden" name="fileText" id="file-text">
-
-    <!-- Footer Continue Button -->
-    <div class="fixed bottom-4 right-4">
-      <button 
-        type="button"
-        id="continue-button"
-        class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 disabled:bg-slate-400 disabled:cursor-not-allowed text-white shadow-lg transition-colors"
-        disabled
-      >
-        <span>Continue</span>
-        <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-        </svg>
-      </button>
-    </div>
-  </form>
-
-  <!-- JavaScript -->
   <script>
     let isTextInputActive = false;
     let isFileInputActive = false;
+    let currentSlide = 0;
 
-    // Hamburger menu functionality
     const hamburger = document.getElementById('hamburger');
     const menuOverlay = document.getElementById('menu-overlay');
     const menuContent = document.getElementById('menu-content');
     const closeMenu = document.getElementById('close-menu');
+    const carouselContainer = document.getElementById('carousel-container');
+    const carouselPrev = document.getElementById('carousel-prev');
+    const carouselNext = document.getElementById('carousel-next');
+    const carouselDots = document.querySelectorAll('.carousel-dot');
 
     function openMenu() {
       hamburger.classList.add('active');
@@ -582,12 +856,9 @@
     hamburger.addEventListener('click', openMenu);
     closeMenu.addEventListener('click', closeMenuFunction);
     menuOverlay.addEventListener('click', (e) => {
-      if (e.target === menuOverlay) {
-        closeMenuFunction();
-      }
+      if (e.target === menuOverlay) closeMenuFunction();
     });
 
-    // Menu link functions
     function projectVersion() {
       window.open('https://itellicloud.sharepoint.com/:b:/r/sites/US-saleshub/Shared%20Documents/06-%20Digital%20Innovations%20Internal%20Documents/Artificial%20Intelligence%20and%20Machine%20Learning%20Projects/2024%20-%20Gen%20AI%20Amplifier/GenAI%20Amplifier%20v1.0.0/PDF/Release%20Document%20-%20GenAI%20Amplifier%20v1.0.0.pdf?csf=1&web=1&e=ebCREP', '_blank');
     }
@@ -600,82 +871,39 @@
       window.open('https://forms.office.com/Pages/DesignPageV2.aspx?subpage=design&token=654c0658f23a4b999abaa3702d23c41e&id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUN0s4QjI4V1VSVlhUWkU0VDE4VzZDUjBORy4u', '_blank');
     }
 
-    // Tab functionality
-    function showTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
+    function updateCarousel() {
+      carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      carouselDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
       });
-      document.getElementById(tabId).classList.add('active');
+
+      carouselPrev.disabled = currentSlide === 0;
+      updateNextButton();
     }
 
-    // File Upload and Drag/Drop Functionality
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileContentInput = document.getElementById('file-text');
-    const nextButton = document.getElementById('next-button');
-    const textInput = document.getElementById('text-input');
-    const notification = document.getElementById('notification');
-    const continueButton = document.getElementById('continue-button');
-    const nextToOwnerButton = document.getElementById('next-to-owner-button');
-
-    // Function to show notifications instead of pop-ups
-    function showNotification(message, type) {
-      notification.textContent = message;
-      if (type === 'success') {
-        notification.style.color = '#059669'; // green in light theme
-      } else if (type === 'error') {
-        notification.style.color = '#dc2626'; // red in light theme
-      } else {
-        notification.style.color = '#64748b'; // slate-500 in light theme
-      }
-    }
-
-    // Function to disable text input
-    function disableTextInput() {
-      textInput.disabled = true;
-      textInput.classList.add('text-input-disabled');
-      textInput.placeholder = "File upload is active - text input disabled";
-    }
-
-    // Function to enable text input
-    function enableTextInput() {
-      textInput.disabled = false;
-      textInput.classList.remove('text-input-disabled');
-      textInput.placeholder = "Type your meeting notes here...";
-    }
-
-    // Function to disable drop zone
-    function disableDropZone() {
-      dropZone.classList.add('disabled');
-      dropZone.style.pointerEvents = 'none';
-      dropZone.querySelector('p').textContent = "Text input is active - file upload disabled";
-    }
-
-    // Function to enable drop zone
-    function enableDropZone() {
-      dropZone.classList.remove('disabled');
-      dropZone.style.pointerEvents = 'auto';
-      dropZone.querySelector('p').textContent = "Drag & drop your meeting notes (.txt) file here, or click to upload";
-    }
-
-    // Function to check if required WRICEF fields are filled
-    function checkWricefFields() {
-      const customer = document.getElementById('customer').value.trim();
-      const ricefwNumber = document.getElementById('ricefw-number').value.trim();
-      
-      if (customer && ricefwNumber) {
-        nextToOwnerButton.disabled = false;
-      } else {
-        nextToOwnerButton.disabled = true;
-      }
-    }
-
-    // Function to check if all fields are filled for continue button
-    function checkAllFields() {
-      const customer = document.getElementById('customer').value.trim();
-      const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+    function updateNextButton() {
       const meetingNotes = document.getElementById('file-text').value.trim();
-      
+      const customer = document.getElementById('customer').value.trim();
+      const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+
+      if (currentSlide === 0) {
+        carouselNext.disabled = !meetingNotes;
+      } else if (currentSlide === 1) {
+        carouselNext.disabled = !(customer && ricefwNumber);
+      } else {
+        carouselNext.disabled = true;
+      }
+
+      updateContinueButton();
+    }
+
+    function updateContinueButton() {
+      const meetingNotes = document.getElementById('file-text').value.trim();
+      const customer = document.getElementById('customer').value.trim();
+      const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+      const continueButton = document.getElementById('continue-button');
+
       if (customer && ricefwNumber && meetingNotes) {
         continueButton.disabled = false;
       } else {
@@ -683,11 +911,82 @@
       }
     }
 
-    // When the drop zone is clicked, trigger file selection
-    dropZone.addEventListener('click', () => {
-      if (!dropZone.classList.contains('disabled')) {
-        fileInput.click();
+    carouselPrev.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateCarousel();
       }
+    });
+
+    carouselNext.addEventListener('click', () => {
+      if (currentSlide < 2) {
+        currentSlide++;
+        updateCarousel();
+        showNotification(`Moved to ${currentSlide === 1 ? 'DEV Item Details' : 'Owner Details'}`, 'success');
+      }
+    });
+
+    carouselDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const meetingNotes = document.getElementById('file-text').value.trim();
+        const customer = document.getElementById('customer').value.trim();
+        const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+
+        if (index === 0 || 
+            (index === 1 && meetingNotes) || 
+            (index === 2 && meetingNotes && customer && ricefwNumber)) {
+          currentSlide = index;
+          updateCarousel();
+        }
+      });
+    });
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileContentInput = document.getElementById('file-text');
+    const textInput = document.getElementById('text-input');
+    const notification = document.getElementById('notification');
+    const continueButton = document.getElementById('continue-button');
+    const fileList = document.getElementById('fileList');
+
+    function showNotification(message, type) {
+      if (!notification) return;
+      notification.textContent = message;
+      if (type === 'success') {
+        notification.style.color = '#10b981';
+      } else if (type === 'error') {
+        notification.style.color = '#f97316';
+      } else {
+        notification.style.color = '#6b7280';
+      }
+    }
+
+    function disableTextInput() {
+      textInput.disabled = true;
+      textInput.placeholder = "File upload is active - text input disabled";
+      textInput.style.background = '#f9fafb';
+    }
+
+    function enableTextInput() {
+      textInput.disabled = false;
+      textInput.placeholder = "Type your meeting notes here...";
+      textInput.style.background = 'white';
+    }
+
+    function disableDropZone() {
+      dropZone.classList.add('disabled');
+      const p = document.getElementById('drop-zone-text');
+      if (p) p.textContent = "Text input is active - file upload disabled";
+    }
+
+    function enableDropZone() {
+      dropZone.classList.remove('disabled');
+      const p = document.getElementById('drop-zone-text');
+      if (p) p.textContent = "Drag & drop your meeting notes (.txt) file here, or click to upload";
+    }
+
+    dropZone.addEventListener('click', () => {
+      if (!dropZone.classList.contains('disabled')) fileInput.click();
     });
 
     dropZone.addEventListener('dragover', (event) => {
@@ -701,95 +1000,89 @@
       dropZone.classList.remove('dragging');
     });
 
-    // Handle file drop
     dropZone.addEventListener('drop', async (event) => {
       if (!dropZone.classList.contains('disabled')) {
         event.preventDefault();
         dropZone.classList.remove('dragging');
         const file = event.dataTransfer.files[0];
-        if (file && file.type === 'text/plain') {
-          const text = await file.text();
-          fileContentInput.value = encodeURIComponent(text);
-          nextButton.disabled = false;
-          isFileInputActive = true;
-          isTextInputActive = false;
-          disableTextInput();
-          textInput.value = ''; // Clear text input
-          showNotification('File Uploaded Successfully!', "success");
-          checkAllFields();
-        } else {
-          showNotification('Please upload a valid .txt file.', "error");
-        }
+        await handleTxtFile(file);
       }
     });
 
-    // Handle file selection
     fileInput.addEventListener('change', async () => {
       const file = fileInput.files[0];
+      await handleTxtFile(file);
+    });
+
+    function renderFileList(name) {
+      fileList.innerHTML = '';
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      fileItem.innerHTML = `<span class="file-name">📎 ${name}</span><span class="remove-file" id="remove-file-btn">✕</span>`;
+      fileList.appendChild(fileItem);
+      const rem = document.getElementById('remove-file-btn');
+      if (rem) rem.addEventListener('click', () => {
+        fileContentInput.value = '';
+        fileList.innerHTML = '';
+        isFileInputActive = false;
+        enableTextInput();
+        enableDropZone();
+        updateNextButton();
+        showNotification('File removed', 'info');
+      });
+    }
+
+    async function handleTxtFile(file) {
+      if (!file) return;
       if (file && file.type === 'text/plain') {
         const text = await file.text();
         fileContentInput.value = encodeURIComponent(text);
-        nextButton.disabled = false;
         isFileInputActive = true;
         isTextInputActive = false;
         disableTextInput();
-        textInput.value = ''; // Clear text input
-        showNotification('File Uploaded Successfully!', "success");
-        checkAllFields();
+        textInput.value = '';
+        showNotification('File Uploaded Successfully!', 'success');
+        renderFileList(file.name);
+        updateNextButton();
       } else {
-        showNotification('Please upload a valid .txt file.', "error");
+        showNotification('Please upload a valid .txt file.', 'error');
       }
-    });
+    }
 
-    // Listen for manual text input
     textInput.addEventListener('input', () => {
       const text = textInput.value.trim();
       if (text && !isFileInputActive) {
         fileContentInput.value = encodeURIComponent(text);
-        nextButton.disabled = false;
         isTextInputActive = true;
         disableDropZone();
-        checkAllFields();
       } else if (!text && !isFileInputActive) {
         fileContentInput.value = '';
-        nextButton.disabled = true;
         isTextInputActive = false;
         enableDropZone();
-        checkAllFields();
       }
+      updateNextButton();
     });
 
-    // Add event listeners for WRICEF required fields
-    document.getElementById('customer').addEventListener('input', () => {
-      checkWricefFields();
-      checkAllFields();
-    });
-    
-    document.getElementById('ricefw-number').addEventListener('input', () => {
-      checkWricefFields();
-      checkAllFields();
-    });
+    const custElem = document.getElementById('customer');
+    const ricefwElem = document.getElementById('ricefw-number');
+    if (custElem) custElem.addEventListener('input', updateNextButton);
+    if (ricefwElem) ricefwElem.addEventListener('input', updateNextButton);
 
-    // Function to save data to MongoDB
     async function saveToMongoDB() {
       const formData = new FormData(document.getElementById('mainForm'));
-      // Convert FormData to a plain object
       const data = Object.fromEntries(formData.entries());
-      // Transform keys: replace dashes with underscores
       const transformedData = {};
       for (const [key, value] of Object.entries(data)) {
         transformedData[key.replace(/-/g, "_")] = value;
       }
-      
+
       try {
         const response = await fetch('/add', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(transformedData)
         });
-        
+
         if (response.ok) {
           const result = await response.json();
           console.log('Data saved to MongoDB:', result);
@@ -806,92 +1099,49 @@
       }
     }
 
-    // Next button functionality (Home to WRICEF Details)
-    nextButton.addEventListener('click', () => {
-      const meetingNotes = fileContentInput.value.trim();
-      if (meetingNotes) {
-        showTab('tab2');
-        showNotification('Moved to WRICEF Details', 'success');
-
-        // Enable DEV Item Details tab after Home
-        document.getElementById("tab2-btn").disabled = false;
-        document.getElementById("tab2-btn").classList.remove("bg-slate-600");
-        document.getElementById("tab2-btn").classList.add("bg-blue-600");
-
-      } else {
-        showNotification('Please enter meeting notes or upload a file', 'error');
-      }
-    });
-
-    // Next button functionality (WRICEF Details to Owner Details)
-    nextToOwnerButton.addEventListener('click', () => {
-      const customer = document.getElementById('customer').value.trim();
-      const ricefwNumber = document.getElementById('ricefw-number').value.trim();
-      
-      if (customer && ricefwNumber) {
-        showTab('tab3');
-        showNotification('Moved to Owner Details', 'success');
-
-        // Enable Owner Details tab after WRICEF
-        document.getElementById("tab3-btn").disabled = false;
-        document.getElementById("tab3-btn").classList.remove("bg-slate-600");
-        document.getElementById("tab3-btn").classList.add("bg-blue-600");
-
-      } else {
-        showNotification('Please fill in Customer and WRICEF Number fields', 'error');
-      }
-    });
-
-    // Load existing WRICEF button
     document.getElementById('load-existing-button').addEventListener('click', () => {
       window.location.href = '/listofwricefs';
     });
 
-    // Continue button functionality
-    continueButton.addEventListener('click', async () => {
+    continueButton.addEventListener('click', async (e) => {
+      e.preventDefault();
       const customer = document.getElementById('customer').value.trim();
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
       const meetingNotes = document.getElementById('file-text').value.trim();
-      
+
       if (!customer || !ricefwNumber || !meetingNotes) {
         showNotification('Please fill in all required fields and ensure meeting notes are entered', 'error');
         return;
       }
-      
-      // Save all data to MongoDB before redirecting
+
       const savedSuccessfully = await saveToMongoDB();
-      
       if (savedSuccessfully) {
-        // Small delay to ensure save completed, then redirect
         setTimeout(() => {
           redirectToSuccess();
         }, 500);
       }
     });
 
-    // Redirect to the success page with parameters
     function redirectToSuccess() {
       let name = document.getElementById("customer").value;
       let meetingNotes = document.getElementById("file-text").value;
       let ricefwNumber = document.getElementById("ricefw-number").value;
       let wricef_type = document.getElementById("ricefw").value;
       
-      // Redirect to success page
       window.location.href = `/success?name=${encodeURIComponent(name)}&meetingNotes=${encodeURIComponent(meetingNotes)}&ricefwNumber=${encodeURIComponent(ricefwNumber)}&wricef_type=${encodeURIComponent(wricef_type)}`;
     }
 
-    // Set current date as default for date fields
     document.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
-      document.getElementById('document-date').value = today;
+      const dd = document.getElementById('document-date');
+      if (dd) dd.value = today;
+
+      updateCarousel();
+      updateNextButton();
     });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // Press Escape to close menu
-      if (e.key === 'Escape') {
-        closeMenuFunction();
-      }
+      if (e.key === 'Escape') closeMenuFunction();
     });
   </script>
 </body>
