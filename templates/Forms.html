@@ -3,993 +3,1235 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Section 1: VOC</title>
+  <title>GenAI Amplifier - Reports Section</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background-color: #f8fafc;
-      color: #1e293b;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      color: #1a202c;
     }
 
-    header {
-      background-color: #ffffff;
-      border-bottom: 2px solid #e2e8f0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    /* Header - White with secondary color accents */
+    header.modern-header {
+      background: #ffffff;
+      border-bottom: 3px solid #14b8a6;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
-    /* Custom styling for buttons */
-    .edit-button, .save-button, .regenerate-button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      outline: none;
-    }
-    
-    .edit-button {
-      background-color: #3b82f6;
-      color: white;
-    }
-    
-    .edit-button:hover {
-      background-color: #2563eb;
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
-    .edit-button:active {
-      background-color: #1d4ed8;
-    }
-    
-    .save-button {
-      background-color: #10b981;
-      color: white;
-    }
-    
-    .save-button:hover {
-      background-color: #059669;
-    }
-    
-    .regenerate-button {
-      background-color: #f59e0b;
-      color: white;
-      margin-left: 8px;
-    }
-    
-    .regenerate-button:hover {
-      background-color: #d97706;
-    }
-
-    /* Home button styling */
     .home-button {
-      background-color: #3b82f6;
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
       color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
     }
-    
+
     .home-button:hover {
-      background-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
     }
 
-    .home-button:active {
-      background-color: #1d4ed8;
+    .app-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      letter-spacing: -0.5px;
     }
 
-    /* Section headings styling */
-    .section-header {
-      font-weight: bold;
-      color: #1e40af;
+    .customer-info {
+      background: #f0fdfa;
+      border: 2px solid #5eead4;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: right;
     }
 
-    .section-description {
-      color: #475569;
+    .customer-info div {
+      font-size: 0.875rem;
+      color: #115e59;
+      margin-bottom: 0.25rem;
     }
 
-    /* When a section container is in edit mode, show a border */
-    [data-section-name][contenteditable="true"] {
-      border: 2px solid #3b82f6;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: #f0f9ff;
+    .customer-info strong {
+      color: #0f766e;
     }
 
-    /* Remove default focus outline for contenteditable elements */
-    [contenteditable]:focus {
+    /* Main Container */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .content-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    /* Section Headers */
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 6px;
+      height: 32px;
+      background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%);
+      border-radius: 3px;
+    }
+
+    .section-subtitle {
+      color: #6b7280;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+
+    .section-divider {
+      height: 2px;
+      background: linear-gradient(90deg, #14b8a6, transparent);
+      margin: 1.5rem 0;
+      border-radius: 2px;
+    }
+
+    /* Content Sections */
+    .content-section {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .content-section:hover {
+      box-shadow: 0 2px 8px rgba(20, 184, 166, 0.1);
+    }
+
+    .content-section[contenteditable="true"] {
+      border: 2px solid #14b8a6;
+      background: #f0fdfa;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+    }
+
+    .content-section[contenteditable]:focus {
       outline: none;
     }
 
-    .main-content {
-      background-color: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    .field-label {
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      display: block;
     }
 
-    .generate-button {
-      background-color: #3b82f6;
-      color: white;
-      padding: 10px 16px;
+    .field-content {
+      color: #374151;
+      line-height: 1.7;
+      margin-left: 1rem;
+    }
+
+    .key-concerns-list {
+      list-style: none;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .key-concerns-list li {
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      background: white;
+      border-left: 4px solid #14b8a6;
       border-radius: 8px;
+      color: #374151;
+      transition: all 0.2s ease;
+    }
+
+    .key-concerns-list li:hover {
+      background: #f0fdfa;
+      transform: translateX(4px);
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .action-button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
       border: none;
       cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      font-size: 0.95rem;
     }
 
-    .generate-button:hover {
-      background-color: #2563eb;
+    .edit-button {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
     }
 
-    .generate-button:active {
-      background-color: #1d4ed8;
+    .edit-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
     }
 
+    .save-button {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .save-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .regenerate-button {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .regenerate-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+    }
+
+    .generate-button, .download-button {
+      background: linear-gradient(135deg, #a78bfa 0%, #9333ea 100%);
+      color: white;
+    }
+
+    .generate-button:hover, .download-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+    }
+
+    .action-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Central Button Container */
+    .central-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    /* Notification */
     .notification {
-      color: #10b981;
-      font-size: 14px;
+      margin-top: 2rem;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      display: none;
     }
 
-    .page-title {
+    .notification.show {
+      display: block;
+    }
+
+    .notification.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+
+    .notification.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    .notification.info {
+      background: #dbeafe;
       color: #1e40af;
-      font-weight: 700;
+      border: 2px solid #3b82f6;
     }
 
-    h1 {
-      color: #1e293b;
+    /* Loading state */
+    .loading-text {
+      display: none;
+    }
+
+    .button-loading .button-text {
+      display: none;
+    }
+
+    .button-loading .loading-text {
+      display: inline;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #6b7280;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-left {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+      }
+
+      .app-title {
+        font-size: 1.25rem;
+      }
+
+      .customer-info {
+        font-size: 0.75rem;
+      }
+
+      .section-title {
+        font-size: 1.25rem;
+      }
+
+      .content-card {
+        padding: 1.5rem;
+      }
+
+      .button-group, .central-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .action-button {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen p-10">
-  <!-- HEADER -->
-  <header class="w-full flex items-center justify-between px-6 mb-6 relative py-6 rounded-lg">
-    <!-- Home Button - Top Left -->
-    <div class="absolute left-6">
+
+<body>
+  <!-- Header -->
+  <header class="modern-header">
+    <div class="header-left">
       <button class="home-button" onclick="goToHomepage()">
-        🏠 Home
+        <span>🏠</span>
+        <span>Home</span>
       </button>
+      <h1 class="app-title">GenAI Amplifier</h1>
     </div>
-    
-    <!-- Title - Center -->
-    <div class="mx-auto">
-      <h1 class="text-3xl font-bold text-blue-900 text-center">GenAI Amplifier</h1>
-    </div>
-    
-    <!-- Customer Info - Top Right -->
-    <div class="absolute right-6 text-right">
-      <div class="text-sm text-slate-600">
-        <div><strong>DEV Item:</strong> {{ resume['ricefw'] }}</div>
-        <div><strong>Customer:</strong> {{ resume['customer'] }}</div>
-        <div><strong>Number:</strong> {{ resume['ricefw_number'] }}</div>
-      </div>
+    <div class="customer-info">
+      <div><strong>DEV Item:</strong> {{ resume['ricefw'] }}</div>
+      <div><strong>Customer:</strong> {{ resume['customer'] }}</div>
+      <div><strong>Number:</strong> {{ resume['ricefw_number'] }}</div>
     </div>
   </header>
 
-  <!-- Page Layout -->
-    <!-- Main Content -->
-    <div class="max-w-6xl mx-auto main-content shadow-lg p-8">
-      <!-- Section Title -->
-      <h1 class="text-2xl font-bold page-title mb-4">Section 1: Voice of the Customer (VOC)</h1>
-
-      <!-- Content Sections -->
-      <ul class="space-y-4">
-        {% if 'generated_resume' in resume %}
-          {% if resume['customer'] == name %}
-            <!-- Section 1: Voice of Customer -->
-            <div data-section-name="0" class="mt-6">
-              <p class="text-slate-700" data-key="client_problem">{{ resume['client_problem'][0] }}</p>
-              <br>
-              <p class="text-slate-700 font-bold section-header">Key Concerns:</p>
-              <ul class="list-disc pl-5">
+  <!-- Main Content -->
+  <main class="main-container">
+    <div class="content-card">
+      
+      {% if 'generated_resume' in resume %}
+        {% if resume['customer'] == name %}
+          
+          <!-- Section 1: Voice of Customer -->
+          <div data-section-name="0" class="content-section">
+            <h1 class="section-title">Section 1: Voice of the Customer (VOC)</h1>
+            
+            <p class="field-content" data-key="client_problem">{{ resume['client_problem'][0] }}</p>
+            
+            <div style="margin-top: 1.5rem;">
+              <p class="field-label">Key Concerns:</p>
+              <ul class="key-concerns-list">
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_WHAT_Functional_Description'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_WHAT_Functional_Description">
+                  <li data-key="Voice_Of_Customer_WHAT_Functional_Description">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_WHAT_Functional_Description'] }}
                   </li>
                 {% endif %}
 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_WHY_Business_Benefit_Need'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_WHY_Business_Benefit_Need">
+                  <li data-key="Voice_Of_Customer_WHY_Business_Benefit_Need">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_WHY_Business_Benefit_Need'] }}
                   </li>
                 {% endif %}
                 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_WHO_WHERE'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_WHO_WHERE">
+                  <li data-key="Voice_Of_Customer_WHO_WHERE">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_WHO_WHERE'] }}
                   </li>
                 {% endif %}
                 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_WHEN'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_WHEN">
+                  <li data-key="Voice_Of_Customer_WHEN">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_WHEN'] }}
                   </li>
                 {% endif %}
                 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_HOW_Input'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_HOW_Input">
+                  <li data-key="Voice_Of_Customer_HOW_Input">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_HOW_Input'] }}
                   </li>
                 {% endif %}
                 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_HOW_Process'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_HOW_Process">
+                  <li data-key="Voice_Of_Customer_HOW_Process">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_HOW_Process'] }}
                   </li>
                 {% endif %}
 
                 {% if resume['generated_resume'][0]['Voice_Of_Customer_HOW_Output'] %}
-                  <li class="text-slate-700" data-key="Voice_Of_Customer_HOW_Output">
+                  <li data-key="Voice_Of_Customer_HOW_Output">
                     {{ resume['generated_resume'][0]['Voice_Of_Customer_HOW_Output'] }}
                   </li>
                 {% endif %}
               </ul>
-              <!-- Edit, Save and Regenerate Buttons -->
-              <button class="edit-button mt-4" onclick="enableEditing('0')">Edit</button>
-              <button class="save-button mt-4" onclick="saveChanges('0')" style="display: none;">Save</button>
             </div>
-      
-            <!-- Section 2: Response of the Consultant (ROC) -->
-            {% if resume['generated_resume']|length > 1 %}
-              <div data-section-name="1" class="mt-8">
-                <h1 class="text-2xl font-bold page-title mb-4">Section 2: Response of the Consultant (ROC)</h1>
-                <p class="section-header text-slate-600">To be completed by the Functional Owner (Consultant)</p>
-                <hr class="border-t border-slate-300 my-4">
-                <div class="mt-6">
-                  {% if resume['generated_resume'][1]['alternatives_considered'] %}
-                    <p class="section-header text-slate-600">Process:</p>
-                    <p class="section-description text-slate-900" data-key="alternatives_considered">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['alternatives_considered'] }}
-                    </p>
-                  {% endif %}
 
-                  {% if resume['generated_resume'][1]['agreed_upon_approach'] %}
-                    <p class="section-header mt-4 text-slate-600">Interface Direction:</p>
-                    <p class="section-description text-slate-900" data-key="agreed_upon_approach">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['agreed_upon_approach'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][1]['functional_description'] %}
-                    <p class="section-header mt-4 text-slate-600">Error Handling:</p>
-                    <p class="section-description text-slate-900" data-key="functional_description">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['functional_description'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][1]['business_benefit_need'] %}
-                    <p class="section-header mt-4 text-slate-600">Frequency:</p>
-                    <p class="section-description text-slate-900" data-key="business_benefit_need">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['business_benefit_need'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][1]['important_assumptions'] %}
-                    <p class="section-header mt-4 text-slate-600">Additional Comments:</p>
-                    <p class="section-description text-slate-900" data-key="important_assumptions">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['important_assumptions'] }}
-                    </p>
-                  {% endif %}
+            <div class="button-group">
+              <button class="action-button edit-button" onclick="enableEditing('0')">
+                <span>✏️</span>
+                <span>Edit</span>
+              </button>
+              <button class="action-button save-button" onclick="saveChanges('0')" style="display: none;">
+                <span>💾</span>
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+    
+          <!-- Section 2: Response of the Consultant (ROC) -->
+          {% if resume['generated_resume']|length > 1 %}
+            <div data-section-name="1" class="content-section">
+              <h1 class="section-title">Section 2: Response of the Consultant (ROC)</h1>
+              <p class="section-subtitle">To be completed by the Functional Owner (Consultant)</p>
+              <div class="section-divider"></div>
 
-                  {% if resume['generated_resume'][1]['additional_comments'] %}
-                    <p class="section-header mt-4 text-slate-600">Additional Comments:</p>
-                    <p class="section-description text-slate-900" data-key="additional_comments">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][1]['additional_comments'] }}
-                    </p>
-                  {% endif %}
+              {% if resume['generated_resume'][1]['alternatives_considered'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Process:</p>
+                  <p class="field-content" data-key="alternatives_considered">
+                    {{ resume['generated_resume'][1]['alternatives_considered'] }}
+                  </p>
                 </div>
-                <!-- Edit, Save and Regenerate Buttons -->
-                <button class="edit-button mt-4" onclick="enableEditing('1')">Edit</button>
-                <button class="save-button mt-4" onclick="saveChanges('1')" style="display: none;">Save</button>
-                <button class="regenerate-button mt-4" onclick="regenerateSection('1')">
-                  <span class="button-text">Regenerate</span>
-                  <span class="loading-text" style="display: none;">Regenerating...</span>
+              {% endif %}
+
+              {% if resume['generated_resume'][1]['agreed_upon_approach'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Interface Direction:</p>
+                  <p class="field-content" data-key="agreed_upon_approach">
+                    {{ resume['generated_resume'][1]['agreed_upon_approach'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][1]['functional_description'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Error Handling:</p>
+                  <p class="field-content" data-key="functional_description">
+                    {{ resume['generated_resume'][1]['functional_description'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][1]['business_benefit_need'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Frequency:</p>
+                  <p class="field-content" data-key="business_benefit_need">
+                    {{ resume['generated_resume'][1]['business_benefit_need'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][1]['important_assumptions'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Important Assumptions:</p>
+                  <p class="field-content" data-key="important_assumptions">
+                    {{ resume['generated_resume'][1]['important_assumptions'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][1]['additional_comments'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Additional Comments:</p>
+                  <p class="field-content" data-key="additional_comments">
+                    {{ resume['generated_resume'][1]['additional_comments'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              <div class="button-group">
+                <button class="action-button edit-button" onclick="enableEditing('1')">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+                <button class="action-button save-button" onclick="saveChanges('1')" style="display: none;">
+                  <span>💾</span>
+                  <span>Save</span>
+                </button>
+                <button class="action-button regenerate-button" onclick="regenerateSection('1')">
+                  <span class="button-text">🔄 Regenerate</span>
+                  <span class="loading-text">⏳ Regenerating...</span>
                 </button>
               </div>
-            {% endif %}
-      
-            <!-- Section 3: Functional Design -->
-            {% if resume['generated_resume']|length > 2 %}
-              <div data-section-name="2" class="mt-8">
-                <h1 class="text-2xl font-bold page-title mb-4">Section 3: Functional Design</h1>
-                <p class="section-header text-slate-600">To be completed by the Functional Owner (Consultant)</p>
-                <hr class="border-t border-slate-300 my-4">
-
-                <div class="mt-6">
-                  {% if resume['generated_resume'][2]['Functional_Design_reference_sap_r3_transactions_tables_programs'] %}
-                    <p class="section-header text-slate-600">Reference SAP R/3 Transactions/Tables/Programs: (Include: all known transactions, tables and programs that are used, or reports containing similar data. Screenshots are recommended.)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_reference_sap_r3_transactions_tables_programs">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_reference_sap_r3_transactions_tables_programs'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_input_selection_criteria'] %}
-                    <p class="section-header text-slate-600">Input/ Selection Criteria: (What should the user see on the selection screen?)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_input_selection_criteria">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_input_selection_criteria'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_process'] %}
-                    <p class="section-header text-slate-600">Process: (If possible, in the form of a flowchart, describe the process and what the program should do)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_process">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_process'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_solution'] %}
-                    <p class="section-header text-slate-600">Solution: (Please enter: SAPScript / Smartform / Adobe Print Form)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_solution">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_solution'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_output_format_details'] %}
-                    <p class="section-header text-slate-600">Output/Format Details: (If applicable, what should the user see on the selection screen?)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_output_format_details">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_output_format_details'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_bar_code_requirements'] %}
-                    <p class="section-header text-slate-600">Bar Code Requirements</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_bar_code_requirements">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_bar_code_requirements'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_paper_requirements'] %}
-                    <p class="section-header text-slate-600">Paper Requirements: (Please Specify: pre-printed stationary, multi-page, or multi-form. If left blank, output on letter paper is assumed.)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_paper_requirements">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_paper_requirements'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_logo_requirements'] %}
-                    <p class="section-header text-slate-600">Logo Requirements: (Please provide company logo in TIF, JPEG, VMP, other)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_logo_requirements">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_logo_requirements'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_software_requirements'] %}
-                    <p class="section-header text-slate-600">Software Requirements: (ex: TEC.it/ Printer Vendors DLL’s)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_software_requirements">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_software_requirements'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_printer_requirements'] %}
-                    <p class="section-header text-slate-600">Printer Requirements: (ex: Label Printer, barcode chip, laser, Jet, Matrix)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_printer_requirements">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_printer_requirements'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_output_type_and_application'] %}
-                    <p class="section-header text-slate-600">Output Type and Application:</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_output_type_and_application">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_output_type_and_application'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_security_requirements_no_specific_restrictions'] %}
-                    <p class="section-header text-slate-600">No Specific Restrictions</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_security_requirements_no_specific_restrictions">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_security_requirements_no_specific_restrictions'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_security_requirements_restriction_based_on_certain_criteria'] %}
-                    <p class="section-header text-slate-600">Restriction Based on Certain Criteria (ex: Restricted by sales area?)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_security_requirements_restriction_based_on_certain_criteria">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_security_requirements_restriction_based_on_certain_criteria'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_security_requirements_other'] %}
-                    <p class="section-header text-slate-600">Other</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_security_requirements_other">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_security_requirements_other'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_data_sensitivity'] %}
-                    <p class="section-header text-slate-600">Data Sensitivity: (Plant/Level of restrictions, please explain)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_data_sensitivity">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_data_sensitivity'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_unit_testing'] %}
-                    <p class="section-header text-slate-600">Unit Testing: (Information the developer can use to unit test the application. This needs to include test scenarios, instructions, test data, and expected results)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_unit_testing">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_unit_testing'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_additional_comments'] %}
-                    <p class="section-header text-slate-600">Additional Comments: (Add any additional information necessary to assist in development as needed)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_additional_comments">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_additional_comments'] }}
-                    </p>
-                  {% endif %}
-
-                  {% if resume['generated_resume'][2]['Functional_Design_rework_log'] %}
-                    <p class="section-header text-slate-600">Rework Log: (The version shown above is the latest, this area may contain previous version(s) of the same section)</p>
-                    <p class="section-description text-slate-600" data-key="Functional_Design_rework_log">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][2]['Functional_Design_rework_log'] }}
-                    </p>
-                  {% endif %}
-                </div>
-
-                <!-- Edit, Save and Regenerate Buttons -->
-                <button class="edit-button mt-4" onclick="enableEditing('2')">Edit</button>
-                <button class="save-button mt-4" onclick="saveChanges('2')" style="display: none;">Save</button>
-                <button class="regenerate-button mt-4" onclick="regenerateSection('2')">
-                  <span class="button-text">Regenerate</span>
-                  <span class="loading-text" style="display: none;">Regenerating...</span>
-                </button>
-              </div>
-            {% endif %}
-
-
-      
-            <!-- Section 4: Technical Design -->
-            {% if resume['generated_resume']|length > 3 %}
-              <div data-section-name="3" class="mt-8">
-                <h1 class="text-2xl font-bold page-title mb-4">Section 4: Technical Design</h1>
-                <p class="section-header text-slate-600">To be completed by the Technical Owner (Onsite Tech Lead)</p>
-                <hr class="border-t border-slate-300 my-4">
-
-                <div class="mt-6">
-                  {% if resume['generated_resume'][3]['Technical_Design_design_points'] %}
-                    <p class="section-header text-slate-600">Design Points: (Describe anything that will make the definition of the design clearer, including: calculations and formulas, particular conditions where the program should behave differently, recommendations, etc. If applicable, include recommendations or concerns regarding performance.)</p>
-                    <p class="section-description text-slate-600" data-key="Technical_Design_design_points">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][3]['Technical_Design_design_points'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][3]['Technical_Design_program_logic'] %}
-                    <p class="section-header text-slate-600">Program Logic: (Insert Visio/Pseudo code/Table or Diagram with definition of Project Flow)</p>
-                    <p class="section-description text-slate-600" data-key="Technical_Design_program_logic">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][3]['Technical_Design_program_logic'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][3]['Technical_Design_program_logic_steps'] %}
-                    <p class="section-header text-slate-600">Program Logic Steps:</p>
-                    <pre class="section-description text-slate-600" data-key="Technical_Design_program_logic_steps">
-                      {{ resume['generated_resume'][3]['Technical_Design_program_logic_steps'] | tojson(indent=2) }}
-                    </pre>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][3]['Technical_Design_special_configuration_settings_assumptions'] %}
-                    <p class="section-header text-slate-600">Special Configuration Settings/Assumptions: (Describe any special or temporary pre-requisite configuration requirements)</p>
-                    <p class="section-description text-slate-600" data-key="Technical_Design_special_configuration_settings_assumptions">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][3]['Technical_Design_special_configuration_settings_assumptions'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][3]['Technical_Design_additional_comments'] %}
-                    <p class="section-header text-slate-600">Additional Comments: (Add any additional information necessary to assist in development as needed, e.g. performance concerns)</p>
-                    <p class="section-description text-slate-600" data-key="Technical_Design_additional_comments">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][3]['Technical_Design_additional_comments'] }}
-                    </p>
-                  {% endif %}
-                  
-                  {% if resume['generated_resume'][3]['Technical_Design_rework_log'] %}
-                    <p class="section-header text-slate-600">Rework Log: (The version shown above is the latest; this area may contain previous version(s) of the same section)</p>
-                    <p class="section-description text-slate-600" data-key="Technical_Design_rework_log">
-                      &nbsp;&nbsp;&nbsp;{{ resume['generated_resume'][3]['Technical_Design_rework_log'] }}
-                    </p>
-                  {% endif %}
-                </div>
-
-                <!-- Edit, Save and Regenerate Buttons -->
-                <button class="edit-button mt-4" onclick="enableEditing('3')">Edit</button>
-                <button class="save-button mt-4" onclick="saveChanges('3')" style="display: none;">Save</button>
-                <button class="regenerate-button mt-4" onclick="regenerateSection('3')">
-                  <span class="button-text">Regenerate</span>
-                  <span class="loading-text" style="display: none;">Regenerating...</span>
-                </button>
-              </div>
-            {% endif %}
-
-          {% else %}
-            <p class="text-red-600">Customer in generated resume does not match the provided name.</p>
+            </div>
           {% endif %}
-        {% else %}
-          <p class="text-slate-600">No generated VOC data available. Please click on "Generate VOC" to generate the data.</p>
-        {% endif %}
-      </ul>
+    
+          <!-- Section 3: Functional Design (Reports) -->
+          {% if resume['generated_resume']|length > 2 %}
+            <div data-section-name="2" class="content-section">
+              <h1 class="section-title">Section 3: Functional Design</h1>
+              <p class="section-subtitle">To be completed by the Functional Owner (Consultant)</p>
+              <div class="section-divider"></div>
 
-      <!-- Buttons -->
-      <div class="flex justify-center items-center mt-8 gap-4">
-        <button id="generate-voc" class="generate-button" style="display: none;">
-          <span class="button-text">Generate VOC</span>
-          <span class="loading-text" style="display: none;">Generating VOC...</span>
+              {% if resume['generated_resume'][2]['Functional_Design_reference_sap_r3_transactions_tables_programs'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Reference SAP R/3 Transactions/Tables/Programs:</p>
+                  <p class="field-content" data-key="Functional_Design_reference_sap_r3_transactions_tables_programs">
+                    {{ resume['generated_resume'][2]['Functional_Design_reference_sap_r3_transactions_tables_programs'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_input_selection_criteria'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Input/ Selection Criteria:</p>
+                  <p class="field-content" data-key="Functional_Design_input_selection_criteria">
+                    {{ resume['generated_resume'][2]['Functional_Design_input_selection_criteria'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_process'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Process:</p>
+                  <p class="field-content" data-key="Functional_Design_process">
+                    {{ resume['generated_resume'][2]['Functional_Design_process'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_solution'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Solution:</p>
+                  <p class="field-content" data-key="Functional_Design_solution">
+                    {{ resume['generated_resume'][2]['Functional_Design_solution'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_output_format_details'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Output/Format Details:</p>
+                  <p class="field-content" data-key="Functional_Design_output_format_details">
+                    {{ resume['generated_resume'][2]['Functional_Design_output_format_details'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_bar_code_requirements'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Bar Code Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_bar_code_requirements">
+                    {{ resume['generated_resume'][2]['Functional_Design_bar_code_requirements'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_paper_requirements'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Paper Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_paper_requirements">
+                    {{ resume['generated_resume'][2]['Functional_Design_paper_requirements'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_logo_requirements'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Logo Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_logo_requirements">
+                    {{ resume['generated_resume'][2]['Functional_Design_logo_requirements'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_software_requirements'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Software Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_software_requirements">
+                    {{ resume['generated_resume'][2]['Functional_Design_software_requirements'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_printer_requirements'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Printer Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_printer_requirements">
+                    {{ resume['generated_resume'][2]['Functional_Design_printer_requirements'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_output_type_and_application'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Output Type and Application:</p>
+                  <p class="field-content" data-key="Functional_Design_output_type_and_application">
+                    {{ resume['generated_resume'][2]['Functional_Design_output_type_and_application'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_security_requirements_no_specific_restrictions'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">No Specific Restrictions:</p>
+                  <p class="field-content" data-key="Functional_Design_security_requirements_no_specific_restrictions">
+                    {{ resume['generated_resume'][2]['Functional_Design_security_requirements_no_specific_restrictions'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_security_requirements_restriction_based_on_certain_criteria'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Restriction Based on Certain Criteria:</p>
+                  <p class="field-content" data-key="Functional_Design_security_requirements_restriction_based_on_certain_criteria">
+                    {{ resume['generated_resume'][2]['Functional_Design_security_requirements_restriction_based_on_certain_criteria'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_security_requirements_other'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Other Security Requirements:</p>
+                  <p class="field-content" data-key="Functional_Design_security_requirements_other">
+                    {{ resume['generated_resume'][2]['Functional_Design_security_requirements_other'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_data_sensitivity'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Data Sensitivity:</p>
+                  <p class="field-content" data-key="Functional_Design_data_sensitivity">
+                    {{ resume['generated_resume'][2]['Functional_Design_data_sensitivity'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_unit_testing'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Unit Testing:</p>
+                  <p class="field-content" data-key="Functional_Design_unit_testing">
+                    {{ resume['generated_resume'][2]['Functional_Design_unit_testing'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_additional_comments'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Additional Comments:</p>
+                  <p class="field-content" data-key="Functional_Design_additional_comments">
+                    {{ resume['generated_resume'][2]['Functional_Design_additional_comments'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              {% if resume['generated_resume'][2]['Functional_Design_rework_log'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Rework Log:</p>
+                  <p class="field-content" data-key="Functional_Design_rework_log">
+                    {{ resume['generated_resume'][2]['Functional_Design_rework_log'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              <div class="button-group">
+                <button class="action-button edit-button" onclick="enableEditing('2')">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+                <button class="action-button save-button" onclick="saveChanges('2')" style="display: none;">
+                  <span>💾</span>
+                  <span>Save</span>
+                </button>
+                <button class="action-button regenerate-button" onclick="regenerateSection('2')">
+                  <span class="button-text">🔄 Regenerate</span>
+                  <span class="loading-text">⏳ Regenerating...</span>
+                </button>
+              </div>
+            </div>
+          {% endif %}
+    
+          <!-- Section 4: Technical Design -->
+          {% if resume['generated_resume']|length > 3 %}
+            <div data-section-name="3" class="content-section">
+              <h1 class="section-title">Section 4: Technical Design</h1>
+              <p class="section-subtitle">To be completed by the Technical Owner (Onsite Tech Lead)</p>
+              <div class="section-divider"></div>
+
+              {% if resume['generated_resume'][3]['Technical_Design_design_points'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Design Points:</p>
+                  <p class="field-content" data-key="Technical_Design_design_points">
+                    {{ resume['generated_resume'][3]['Technical_Design_design_points'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][3]['Technical_Design_program_logic'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Program Logic:</p>
+                  <p class="field-content" data-key="Technical_Design_program_logic">
+                    {{ resume['generated_resume'][3]['Technical_Design_program_logic'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][3]['Technical_Design_program_logic_steps'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Program Logic Steps:</p>
+                  <pre class="field-content" data-key="Technical_Design_program_logic_steps" style="background: white; padding: 1rem; border-radius: 8px; overflow-x: auto;">{{ resume['generated_resume'][3]['Technical_Design_program_logic_steps'] | tojson(indent=2) }}</pre>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][3]['Technical_Design_special_configuration_settings_assumptions'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Special Configuration Settings/Assumptions:</p>
+                  <p class="field-content" data-key="Technical_Design_special_configuration_settings_assumptions">
+                    {{ resume['generated_resume'][3]['Technical_Design_special_configuration_settings_assumptions'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][3]['Technical_Design_additional_comments'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Additional Comments:</p>
+                  <p class="field-content" data-key="Technical_Design_additional_comments">
+                    {{ resume['generated_resume'][3]['Technical_Design_additional_comments'] }}
+                  </p>
+                </div>
+              {% endif %}
+              
+              {% if resume['generated_resume'][3]['Technical_Design_rework_log'] %}
+                <div style="margin-bottom: 1.5rem;">
+                  <p class="field-label">Rework Log:</p>
+                  <p class="field-content" data-key="Technical_Design_rework_log">
+                    {{ resume['generated_resume'][3]['Technical_Design_rework_log'] }}
+                  </p>
+                </div>
+              {% endif %}
+
+              <div class="button-group">
+                <button class="action-button edit-button" onclick="enableEditing('3')">
+                  <span>✏️</span>
+                  <span>Edit</span>
+                </button>
+                <button class="action-button save-button" onclick="saveChanges('3')" style="display: none;">
+                  <span>💾</span>
+                  <span>Save</span>
+                </button>
+                <button class="action-button regenerate-button" onclick="regenerateSection('3')">
+                  <span class="button-text">🔄 Regenerate</span>
+                  <span class="loading-text">⏳ Regenerating...</span>
+                </button>
+              </div>
+            </div>
+          {% endif %}
+          
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <p style="font-size: 1.25rem; color: #991b1b; font-weight: 600;">Customer in generated resume does not match the provided name.</p>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <p style="font-size: 1.25rem; font-weight: 600;">No generated VOC data available.</p>
+          <p style="margin-top: 0.5rem;">Please click on "Generate VOC" to generate the data.</p>
+        </div>
+      {% endif %}
+
+      <!-- Central Action Buttons -->
+      <div class="central-actions">
+        <button id="generate-voc" class="action-button generate-button" style="display: none;">
+          <span class="button-text">🎯 Generate VOC</span>
+          <span class="loading-text">⏳ Generating VOC...</span>
         </button>
-        <button id="generate-roc" class="generate-button" style="display: none;">
-          <span class="button-text">Generate ROC</span>
-          <span class="loading-text" style="display: none;">Generating ROC...</span>
+        <button id="generate-roc" class="action-button generate-button" style="display: none;">
+          <span class="button-text">📋 Generate ROC</span>
+          <span class="loading-text">⏳ Generating ROC...</span>
         </button>
-        <button id="generate-fd" class="generate-button" style="display: none;">
-          <span class="button-text">Generate FD</span>
-          <span class="loading-text" style="display: none;">Generating FD...</span>
+        <button id="generate-fd" class="action-button generate-button" style="display: none;">
+          <span class="button-text">🔧 Generate FD</span>
+          <span class="loading-text">⏳ Generating FD...</span>
         </button>
-        <button id="generate-td" class="generate-button" style="display: none;">
-          <span class="button-text">Generate TD</span>
-          <span class="loading-text" style="display: none;">Generating TD...</span>
+        <button id="generate-td" class="action-button generate-button" style="display: none;">
+          <span class="button-text">⚙️ Generate TD</span>
+          <span class="loading-text">⏳ Generating TD...</span>
         </button>
-        <button id="download-resume-btn" class="generate-button" style="display: none;">
-          Download
+        <button id="download-resume-btn" class="action-button download-button" style="display: none;">
+          <span>📥</span>
+          <span>Download</span>
         </button>
       </div>
 
-      <!-- Notification Element -->
-      <div id="notification" class="mt-4 text-center text-lg font-semibold"></div>
+      <!-- Notification -->
+      <div id="notification" class="notification"></div>
     </div>
-  </div>
+  </main>
 
   <script>
-
-// Function to go to homepage
-function goToHomepage() {
-  window.location.href = '/app';
-}
-
-// Debug function to check button visibility
-function debugButtonVisibility() {
-  console.log('=== DEBUG BUTTON VISIBILITY ===');
-  
-  const allSections = document.querySelectorAll('[data-section-name]');
-  console.log('All sections found:', allSections.length);
-  
-  const generatedResumeExists = document.querySelector('[data-section-name]') !== null;
-  console.log('Generated resume exists:', generatedResumeExists);
-  
-  const section0 = document.querySelector('[data-section-name="0"]');
-  const section1 = document.querySelector('[data-section-name="1"]');
-  const section2 = document.querySelector('[data-section-name="2"]');
-  const section3 = document.querySelector('[data-section-name="3"]');
-  
-  console.log('Section 0 exists:', !!section0);
-  console.log('Section 1 exists:', !!section1);
-  console.log('Section 2 exists:', !!section2);
-  console.log('Section 3 exists:', !!section3);
-  
-  let resumeLength = 0;
-  if (section0) resumeLength = 1;
-  if (section1) resumeLength = 2;
-  if (section2) resumeLength = 3;
-  if (section3) resumeLength = 4;
-  
-  console.log('Resume length:', resumeLength);
-  
-  const vocBtn = document.getElementById('generate-voc');
-  const rocBtn = document.getElementById('generate-roc');
-  const fdBtn = document.getElementById('generate-fd');
-  const tdBtn = document.getElementById('generate-td');
-  const downloadBtn = document.getElementById('download-resume-btn');
-  
-  console.log('VOC button exists:', !!vocBtn);
-  console.log('ROC button exists:', !!rocBtn);
-  console.log('FD button exists:', !!fdBtn);
-  console.log('TD button exists:', !!tdBtn);
-  console.log('Download button exists:', !!downloadBtn);
-  
-  console.log('=== END DEBUG ===');
-}
-
-window.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM Content Loaded - calling debug');
-  debugButtonVisibility();
-  updateButtonVisibility();
-});
-
-setTimeout(function() {
-  console.log('Delayed check - calling debug again');
-  debugButtonVisibility();
-  updateButtonVisibility();
-}, 1000);
-
-// Function to check which sections are generated and show appropriate buttons
-function updateButtonVisibility() {
-  const generatedResumeExists = document.querySelector('[data-section-name]') !== null;
-  
-  let resumeLength = 0;
-  if (document.querySelector('[data-section-name="0"]')) resumeLength = 1;
-  if (document.querySelector('[data-section-name="1"]')) resumeLength = 2;
-  if (document.querySelector('[data-section-name="2"]')) resumeLength = 3;
-  if (document.querySelector('[data-section-name="3"]')) resumeLength = 4;
-  
-  document.getElementById('generate-voc').style.display = 'none';
-  document.getElementById('generate-roc').style.display = 'none';
-  document.getElementById('generate-fd').style.display = 'none';
-  document.getElementById('generate-td').style.display = 'none';
-  document.getElementById('download-resume-btn').style.display = 'none';
-  
-  if (!generatedResumeExists || resumeLength === 0) {
-    document.getElementById('generate-voc').style.display = 'inline-block';
-  } else if (resumeLength === 1) {
-    document.getElementById('generate-roc').style.display = 'inline-block';
-  } else if (resumeLength === 2) {
-    document.getElementById('generate-fd').style.display = 'inline-block';
-  } else if (resumeLength === 3) {
-    document.getElementById('generate-td').style.display = 'inline-block';
-  } else if (resumeLength === 4) {
-    document.getElementById('download-resume-btn').style.display = 'inline-block';
-  }
-}
-
-// Function to show loading state for a button
-function showButtonLoading(buttonId) {
-  const button = document.getElementById(buttonId);
-  const buttonText = button.querySelector('.button-text');
-  const loadingText = button.querySelector('.loading-text');
-  
-  button.disabled = true;
-  button.style.opacity = '0.7';
-  button.style.cursor = 'not-allowed';
-  buttonText.style.display = 'none';
-  loadingText.style.display = 'inline';
-}
-
-// Function to hide loading state for a button
-function hideButtonLoading(buttonId) {
-  const button = document.getElementById(buttonId);
-  const buttonText = button.querySelector('.button-text');
-  const loadingText = button.querySelector('.loading-text');
-  
-  button.disabled = false;
-  button.style.opacity = '1';
-  button.style.cursor = 'pointer';
-  buttonText.style.display = 'inline';
-  loadingText.style.display = 'none';
-}
-
-// Function to show loading state for regenerate button
-function showRegenerateLoading(button) {
-  const buttonText = button.querySelector('.button-text');
-  const loadingText = button.querySelector('.loading-text');
-  
-  button.disabled = true;
-  button.style.opacity = '0.7';
-  button.style.cursor = 'not-allowed';
-  buttonText.style.display = 'none';
-  loadingText.style.display = 'inline';
-}
-
-// Function to hide loading state for regenerate button
-function hideRegenerateLoading(button) {
-  const buttonText = button.querySelector('.button-text');
-  const loadingText = button.querySelector('.loading-text');
-  
-  button.disabled = false;
-  button.style.opacity = '1';
-  button.style.cursor = 'pointer';
-  buttonText.style.display = 'inline';
-  loadingText.style.display = 'none';
-}
-
-// Function to show notifications instead of pop-ups
-function showNotification(message, type) {
-  const notification = document.getElementById('notification');
-  notification.textContent = message;
-  if (type === 'success') {
-    notification.style.color = '#10b981';
-  } else if (type === 'error') {
-    notification.style.color = '#d32f2f';
-  } else {
-    notification.style.color = '#000';
-  }
-}
-
-const params = new URLSearchParams(window.location.search);
-const customerName = params.get('name');
-const ricefwNumber = params.get('ricefwNumber');
-
-const encodedText = params.get('meetingNotes');
-const decodedText = encodedText ? decodeURIComponent(encodedText) : "";
-
-console.log(decodedText);
-console.log('Customer:', customerName);
-
-updateButtonVisibility();
-
-document.getElementById('generate-voc').addEventListener('click', () => {
-  if (decodedText && customerName) {
-    showButtonLoading('generate-voc');
-    
-    const prefix = "VOC";
-    const updatedFileContent = `${prefix} ${decodedText}`;
-    const formData = new URLSearchParams();
-    formData.append('client_problem', updatedFileContent);
-    formData.append('client_name', customerName);
-    formData.append('ricefwNumber', ricefwNumber);
-    fetch('/generate_response', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    })
-      .then((response) => {
-        hideButtonLoading('generate-voc');
-        if (response.ok) {
-          showNotification('VOC generated successfully!', "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          showNotification('Failed to Generate VOC.', "error");
-        }
-        return response.json();
-      })
-      .then((data) => console.log('Response:', data))
-      .catch((error) => {
-        console.error('Error:', error);
-        hideButtonLoading('generate-voc');
-        showNotification('Please wait a moment, VOC is being generated...', "success");
-      });
-  } else {
-    showNotification("Please ensure both file content and customer name are available.", "error");
-  }
-});
-
-document.getElementById('generate-roc').addEventListener('click', () => {
-  if (decodedText && customerName) {
-    showButtonLoading('generate-roc');
-    
-    const prefix = "ROC";
-    const updatedFileContent = `${prefix} ${decodedText}`;
-    const formData = new URLSearchParams();
-    formData.append('client_problem', updatedFileContent);
-    formData.append('client_name', customerName);
-    formData.append('ricefwNumber', ricefwNumber);
-    fetch('/generate_response', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    })
-      .then((response) => {
-        hideButtonLoading('generate-roc');
-        if (response.ok) {
-          showNotification('ROC generated successfully!', "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          showNotification('Failed to Generate ROC.', "error");
-        }
-        return response.json();
-      })
-      .then((data) => console.log('Response:', data))
-      .catch((error) => {
-        console.error('Error:', error);
-        hideButtonLoading('generate-roc');
-        showNotification('Please wait a moment, ROC is being generated...', "success");
-      });
-  } else {
-    showNotification("Please ensure both file content and customer name are available.", "error");
-  }
-});
-
-document.getElementById('generate-fd').addEventListener('click', () => {
-  if (decodedText && customerName) {
-    showButtonLoading('generate-fd');
-    
-    const prefix = "FD";
-    const updatedFileContent = `${prefix} ${decodedText}`;
-    const formData = new URLSearchParams();
-    formData.append('client_problem', updatedFileContent);
-    formData.append('client_name', customerName);
-    formData.append('ricefwNumber', ricefwNumber);
-    fetch('/generate_response', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    })
-      .then((response) => {
-        hideButtonLoading('generate-fd');
-        if (response.ok) {
-          showNotification('FD generated successfully!', "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          showNotification('Failed to Generate FD.', "error");
-        }
-        return response.json();
-      })
-      .then((data) => console.log('Response:', data))
-      .catch((error) => {
-        console.error('Error:', error);
-        hideButtonLoading('generate-fd');
-        showNotification('Please wait a moment, FD is being generated...', "success");
-      });
-  } else {
-    showNotification("Please ensure both file content and customer name are available.", "error");
-  }
-});
-
-document.getElementById('generate-td').addEventListener('click', () => {
-  if (decodedText && customerName) {
-    showButtonLoading('generate-td');
-    
-    const prefix = "TD";
-    const updatedFileContent = `${prefix} ${decodedText}`;
-    const formData = new URLSearchParams();
-    formData.append('client_problem', updatedFileContent);
-    formData.append('client_name', customerName);
-    formData.append('ricefwNumber', ricefwNumber);
-    fetch('/generate_response', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
-    })
-      .then((response) => {
-        hideButtonLoading('generate-td');
-        if (response.ok) {
-          showNotification('TD generated successfully!', "success");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          showNotification('Failed to Generate TD.', "error");
-        }
-        return response.json();
-      })
-      .then((data) => console.log('Response:', data))
-      .catch((error) => {
-        console.error('Error:', error);
-        hideButtonLoading('generate-td');
-        showNotification('Please wait a moment, TD is being generated...', "success");
-      });
-  } else {
-    showNotification("Please ensure both file content and customer name are available.", "error");
-  }
-});
-
-async function downloadResume() {
-  if (!ricefwNumber) {
-    showNotification("RICEFW number is missing from the URL parameters.", "error");
-    return;
-  }
-  try {
-    const response = await fetch(`/resume_download/${ricefwNumber}`);
-    if (!response.ok) {
-      throw new Error(`Failed to download resume: ${response.statusText}`);
+    // Function to go to homepage
+    function goToHomepage() {
+      window.location.href = '/app';
     }
-    const blob = await response.blob();
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `RICEF_${ricefwNumber}.docx`;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(downloadLink.href);
-    showNotification("Wricef downloaded successfully!", "success");
-  } catch (error) {
-    console.error('Error downloading the Wricef:', error);
-    showNotification("An error occurred while downloading the Wricefw.", "error");
-  }
-}
 
-document.getElementById('download-resume-btn').addEventListener('click', downloadResume);
+    // Function to show notification
+    function showNotification(message, type) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = 'notification show ' + type;
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 5000);
+    }
 
-function enableEditing(sectionName) {
-  var section = document.querySelector(`[data-section-name="${sectionName}"]`);
-  if (section) {
-    section.setAttribute('contenteditable', 'true');
-    var editBtn = section.querySelector('.edit-button');
-    var saveBtn = section.querySelector('.save-button');
-    if (editBtn) editBtn.setAttribute('contenteditable', 'false');
-    if (saveBtn) saveBtn.setAttribute('contenteditable', 'false');
-    editBtn.style.display = 'none';
-    saveBtn.style.display = 'inline';
-  }
-}
+    // Function to show loading state for a button
+    function showButtonLoading(buttonId) {
+      const button = document.getElementById(buttonId);
+      button.classList.add('button-loading');
+      button.disabled = true;
+      button.style.opacity = '0.7';
+      button.style.cursor = 'not-allowed';
+    }
 
-function saveChanges(sectionName) {
-  if (!customerName) {
-    showNotification('Customer name not found in URL parameters.', "error");
-    return;
-  }
-  var section = document.querySelector(`[data-section-name="${sectionName}"]`);
-  if (section) {
-    var elements = section.querySelectorAll('p, li');
-    var updatedData = {};
-    elements.forEach(function(el) {
-      var key = el.getAttribute('data-key');
-      if (key) {
-        updatedData[key] = el.innerText;
+    // Function to hide loading state for a button
+    function hideButtonLoading(buttonId) {
+      const button = document.getElementById(buttonId);
+      button.classList.remove('button-loading');
+      button.disabled = false;
+      button.style.opacity = '1';
+      button.style.cursor = 'pointer';
+    }
+
+    // Function to show loading state for regenerate button
+    function showRegenerateLoading(button) {
+      button.classList.add('button-loading');
+      button.disabled = true;
+      button.style.opacity = '0.7';
+      button.style.cursor = 'not-allowed';
+    }
+
+    // Function to hide loading state for regenerate button
+    function hideRegenerateLoading(button) {
+      button.classList.remove('button-loading');
+      button.disabled = false;
+      button.style.opacity = '1';
+      button.style.cursor = 'pointer';
+    }
+
+    // Function to check which sections are generated and show appropriate buttons
+    function updateButtonVisibility() {
+      const generatedResumeExists = document.querySelector('[data-section-name]') !== null;
+      
+      let resumeLength = 0;
+      if (document.querySelector('[data-section-name="0"]')) resumeLength = 1;
+      if (document.querySelector('[data-section-name="1"]')) resumeLength = 2;
+      if (document.querySelector('[data-section-name="2"]')) resumeLength = 3;
+      if (document.querySelector('[data-section-name="3"]')) resumeLength = 4;
+      
+      document.getElementById('generate-voc').style.display = 'none';
+      document.getElementById('generate-roc').style.display = 'none';
+      document.getElementById('generate-fd').style.display = 'none';
+      document.getElementById('generate-td').style.display = 'none';
+      document.getElementById('download-resume-btn').style.display = 'none';
+      
+      if (!generatedResumeExists || resumeLength === 0) {
+        document.getElementById('generate-voc').style.display = 'inline-flex';
+      } else if (resumeLength === 1) {
+        document.getElementById('generate-roc').style.display = 'inline-flex';
+      } else if (resumeLength === 2) {
+        document.getElementById('generate-fd').style.display = 'inline-flex';
+      } else if (resumeLength === 3) {
+        document.getElementById('generate-td').style.display = 'inline-flex';
+      } else if (resumeLength === 4) {
+        document.getElementById('download-resume-btn').style.display = 'inline-flex';
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const customerName = params.get('name');
+    const ricefwNumber = params.get('ricefwNumber');
+    const encodedText = params.get('meetingNotes');
+    const decodedText = encodedText ? decodeURIComponent(encodedText) : "";
+
+    console.log('Customer:', customerName);
+    console.log('RICEF Number:', ricefwNumber);
+
+    // Initialize button visibility
+    window.addEventListener('DOMContentLoaded', function() {
+      updateButtonVisibility();
+    });
+
+    // Generate VOC
+    document.getElementById('generate-voc').addEventListener('click', () => {
+      if (decodedText && customerName) {
+        showButtonLoading('generate-voc');
+        
+        const prefix = "VOC";
+        const updatedFileContent = `${prefix} ${decodedText}`;
+        const formData = new URLSearchParams();
+        formData.append('client_problem', updatedFileContent);
+        formData.append('client_name', customerName);
+        formData.append('ricefwNumber', ricefwNumber);
+        
+        fetch('/generate_response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        })
+          .then((response) => {
+            hideButtonLoading('generate-voc');
+            if (response.ok) {
+              showNotification('VOC generated successfully!', 'success');
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            } else {
+              showNotification('Failed to Generate VOC.', 'error');
+            }
+            return response.json();
+          })
+          .then((data) => console.log('Response:', data))
+          .catch((error) => {
+            console.error('Error:', error);
+            hideButtonLoading('generate-voc');
+            showNotification('Please wait a moment, VOC is being generated...', 'info');
+          });
+      } else {
+        showNotification('Please ensure both file content and customer name are available.', 'error');
       }
     });
-    
-    fetch(`/update_customer_data?customerName=${encodeURIComponent(customerName)}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ section: sectionName, data: updatedData })
-    })
-    .then(response => response.json())
-    .then(result => {
-      if (result.success) {
-        section.removeAttribute('contenteditable');
+
+    // Generate ROC
+    document.getElementById('generate-roc').addEventListener('click', () => {
+      if (decodedText && customerName) {
+        showButtonLoading('generate-roc');
+        
+        const prefix = "ROC";
+        const updatedFileContent = `${prefix} ${decodedText}`;
+        const formData = new URLSearchParams();
+        formData.append('client_problem', updatedFileContent);
+        formData.append('client_name', customerName);
+        formData.append('ricefwNumber', ricefwNumber);
+        
+        fetch('/generate_response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        })
+          .then((response) => {
+            hideButtonLoading('generate-roc');
+            if (response.ok) {
+              showNotification('ROC generated successfully!', 'success');
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            } else {
+              showNotification('Failed to Generate ROC.', 'error');
+            }
+            return response.json();
+          })
+          .then((data) => console.log('Response:', data))
+          .catch((error) => {
+            console.error('Error:', error);
+            hideButtonLoading('generate-roc');
+            showNotification('Please wait a moment, ROC is being generated...', 'info');
+          });
+      } else {
+        showNotification('Please ensure both file content and customer name are available.', 'error');
+      }
+    });
+
+    // Generate FD
+    document.getElementById('generate-fd').addEventListener('click', () => {
+      if (decodedText && customerName) {
+        showButtonLoading('generate-fd');
+        
+        const prefix = "FD";
+        const updatedFileContent = `${prefix} ${decodedText}`;
+        const formData = new URLSearchParams();
+        formData.append('client_problem', updatedFileContent);
+        formData.append('client_name', customerName);
+        formData.append('ricefwNumber', ricefwNumber);
+        
+        fetch('/generate_response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        })
+          .then((response) => {
+            hideButtonLoading('generate-fd');
+            if (response.ok) {
+              showNotification('FD generated successfully!', 'success');
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            } else {
+              showNotification('Failed to Generate FD.', 'error');
+            }
+            return response.json();
+          })
+          .then((data) => console.log('Response:', data))
+          .catch((error) => {
+            console.error('Error:', error);
+            hideButtonLoading('generate-fd');
+            showNotification('Please wait a moment, FD is being generated...', 'info');
+          });
+      } else {
+        showNotification('Please ensure both file content and customer name are available.', 'error');
+      }
+    });
+
+    // Generate TD
+    document.getElementById('generate-td').addEventListener('click', () => {
+      if (decodedText && customerName) {
+        showButtonLoading('generate-td');
+        
+        const prefix = "TD";
+        const updatedFileContent = `${prefix} ${decodedText}`;
+        const formData = new URLSearchParams();
+        formData.append('client_problem', updatedFileContent);
+        formData.append('client_name', customerName);
+        formData.append('ricefwNumber', ricefwNumber);
+        
+        fetch('/generate_response', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
+        })
+          .then((response) => {
+            hideButtonLoading('generate-td');
+            if (response.ok) {
+              showNotification('TD generated successfully!', 'success');
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            } else {
+              showNotification('Failed to Generate TD.', 'error');
+            }
+            return response.json();
+          })
+          .then((data) => console.log('Response:', data))
+          .catch((error) => {
+            console.error('Error:', error);
+            hideButtonLoading('generate-td');
+            showNotification('Please wait a moment, TD is being generated...', 'info');
+          });
+      } else {
+        showNotification('Please ensure both file content and customer name are available.', 'error');
+      }
+    });
+
+    // Download resume
+    async function downloadResume() {
+      if (!ricefwNumber) {
+        showNotification('RICEFW number is missing from the URL parameters.', 'error');
+        return;
+      }
+      try {
+        const response = await fetch(`/resume_download/${ricefwNumber}`);
+        if (!response.ok) {
+          throw new Error(`Failed to download resume: ${response.statusText}`);
+        }
+        const blob = await response.blob();
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = `RICEF_${ricefwNumber}.docx`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(downloadLink.href);
+        showNotification('WRICEF downloaded successfully!', 'success');
+      } catch (error) {
+        console.error('Error downloading the WRICEF:', error);
+        showNotification('An error occurred while downloading the WRICEF.', 'error');
+      }
+    }
+
+    document.getElementById('download-resume-btn').addEventListener('click', downloadResume);
+
+    // Enable editing
+    function enableEditing(sectionName) {
+      var section = document.querySelector(`[data-section-name="${sectionName}"]`);
+      if (section) {
+        section.setAttribute('contenteditable', 'true');
+        var editBtn = section.querySelector('.edit-button');
+        var saveBtn = section.querySelector('.save-button');
+        var regenerateBtn = section.querySelector('.regenerate-button');
+        
+        if (editBtn) editBtn.setAttribute('contenteditable', 'false');
+        if (saveBtn) saveBtn.setAttribute('contenteditable', 'false');
+        if (regenerateBtn) regenerateBtn.setAttribute('contenteditable', 'false');
+        
+        editBtn.style.display = 'none';
+        saveBtn.style.display = 'inline-flex';
+      }
+    }
+
+    // Save changes
+    function saveChanges(sectionName) {
+      if (!customerName) {
+        showNotification('Customer name not found in URL parameters.', 'error');
+        return;
+      }
+      var section = document.querySelector(`[data-section-name="${sectionName}"]`);
+      if (section) {
+        var elements = section.querySelectorAll('p, li, pre');
+        var updatedData = {};
         elements.forEach(function(el) {
-          el.removeAttribute('contenteditable');
+          var key = el.getAttribute('data-key');
+          if (key) {
+            updatedData[key] = el.innerText;
+          }
         });
-        section.querySelector('.edit-button').style.display = 'inline';
-        section.querySelector('.save-button').style.display = 'none';
-        showNotification('Changes saved successfully!', "success");
+        
+        fetch(`/update_customer_data?customerName=${encodeURIComponent(customerName)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ section: sectionName, data: updatedData })
+        })
+        .then(response => response.json())
+        .then(result => {
+          if (result.success) {
+            section.removeAttribute('contenteditable');
+            elements.forEach(function(el) {
+              el.removeAttribute('contenteditable');
+            });
+            section.querySelector('.edit-button').style.display = 'inline-flex';
+            section.querySelector('.save-button').style.display = 'none';
+            showNotification('Changes saved successfully!', 'success');
+          } else {
+            showNotification('Save failed: ' + result.error, 'error');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showNotification('An error occurred while saving changes.', 'error');
+        });
       } else {
-        showNotification('Save failed: ' + result.error, "error");
+        showNotification(`Section with data-section-name="${sectionName}" not found.`, 'error');
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      showNotification('An error occurred while saving changes.', "error");
-    });
-  } else {
-    showNotification(`Section with data-section-name="${sectionName}" not found.`, "error");
-  }
-}
+    }
 
-function regenerateSection(sectionName) {
-  if (decodedText && customerName && ricefwNumber) {
-    const section = document.querySelector(`[data-section-name="${sectionName}"]`);
-    const regenerateBtn = section.querySelector('.regenerate-button');
-    
-    showRegenerateLoading(regenerateBtn);
-    
-    const formData = new URLSearchParams();
-    formData.append('client_name', customerName);
-    formData.append('meetingNotes', decodedText);
-    formData.append('section_index', sectionName);
-    formData.append('ricefwNumber', ricefwNumber);
+    // Regenerate section
+    function regenerateSection(sectionName) {
+      if (decodedText && customerName && ricefwNumber) {
+        const section = document.querySelector(`[data-section-name="${sectionName}"]`);
+        const regenerateBtn = section.querySelector('.regenerate-button');
+        
+        showRegenerateLoading(regenerateBtn);
+        
+        const formData = new URLSearchParams();
+        formData.append('client_name', customerName);
+        formData.append('meetingNotes', decodedText);
+        formData.append('section_index', sectionName);
+        formData.append('ricefwNumber', ricefwNumber);
 
-    fetch('/regeneration', { 
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: formData.toString()
-    })
-    .then(response => {
-      hideRegenerateLoading(regenerateBtn);
-      if (response.ok) {
-        showNotification('Section ' + sectionName + ' regenerated successfully!', 'success');
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        fetch('/regeneration', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+        })
+        .then(response => {
+          hideRegenerateLoading(regenerateBtn);
+          if (response.ok) {
+            showNotification('Section ' + sectionName + ' regenerated successfully!', 'success');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } else {
+            showNotification('Failed to regenerate section ' + sectionName, 'error');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Regeneration Response:', data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hideRegenerateLoading(regenerateBtn);
+          showNotification('Please wait a moment, section is being regenerated...', 'info');
+        });
       } else {
-        showNotification('Failed to regenerate section ' + sectionName, 'error');
+        showNotification('Please ensure both file content and customer name are available.', 'error');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Regeneration Response:', data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      hideRegenerateLoading(regenerateBtn);
-      showNotification('Please wait a moment, section is being regenerated...', "success");
-    });
-  } else {
-    showNotification("Please ensure both file content and customer name are available.", "error");
-  }
-}
-
+    }
   </script>
 </body>
 </html>
