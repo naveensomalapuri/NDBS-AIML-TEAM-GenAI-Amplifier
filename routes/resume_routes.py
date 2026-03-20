@@ -62,6 +62,11 @@ async def get_app(request: Request):
     return templates.TemplateResponse("app.html", {"request": request})
 
 
+@router.get("/app", response_class=HTMLResponse)
+async def read_app(request: Request):
+    return templates.TemplateResponse("app.html", {"request": request})
+
+
 """
 @router.get("/section1.html", response_class=HTMLResponse)
 async def open_section1(request: Request):
