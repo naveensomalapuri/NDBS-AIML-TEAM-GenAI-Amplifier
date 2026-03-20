@@ -1,12 +1,6 @@
-.DS_Store
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-venv/
-.venv/
-env/
+.env
+.DS_Store
+logs/
 *.log
-text.html
-textofgenerationg.html
-__pycache__ 18-47-34-251/
