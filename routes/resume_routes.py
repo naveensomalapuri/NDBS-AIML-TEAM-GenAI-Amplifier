@@ -70,22 +70,24 @@ async def add_item(form_data: Formdata):
 
 # ─────────────────────────────────────────────
 #  Success page (reached right after /add)
-#  NOTE: meetingNotes is still passed here via query-param
-#  because this redirect happens immediately after form
-#  submission before the user ever navigates away.
-#  The value is already stored in MongoDB so no 431 risk
-#  (it is NOT re-fetched from the URL on subsequent loads).
+#  FIX (HTTP 431): previously name + meetingNotes (full
+#  file text) were passed as URL query-params, hitting
+#  the 8 KB header limit.  Now only ricefwNumber and
+#  wricef_type travel in the URL; everything else is
+#  fetched directly from MongoDB.
 # ─────────────────────────────────────────────
 
 @router.get("/success")
-async def success_page(request: Request, name: str, meetingNotes: str, ricefwNumber: str, wricef_type: str):
+async def success_page(request: Request, ricefwNumber: str, wricef_type: str):
     resume = collection.find_one({"ricefw_number": ricefwNumber})
+    if not resume:
+        raise HTTPException(status_code=404, detail="RICEF not found")
     return templates.TemplateResponse(
         f"{wricef_type}.html",
         {
             "request": request,
-            "name": name,
-            "meetingNotes": meetingNotes,
+            "name": resume.get("customer", ""),
+            "meetingNotes": resume.get("fileText", ""),
             "ricefwNumber": ricefwNumber,
             "resume": resume,
         },

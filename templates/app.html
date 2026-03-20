@@ -1154,16 +1154,14 @@
     });
 
     function redirectToSuccess() {
-      const name = document.getElementById("customer").value;
-      const meetingNotes = document.getElementById("file-text").value;
       const ricefwNumber = document.getElementById("ricefw-number").value;
       const wricef_type = document.getElementById("ricefw").value;
 
-      // NOTE: meetingNotes is passed here only for the immediate /success page
-      // render.  It is NOT used when loading existing items from the list –
-      // those go through /view/<ricefw_number> which reads from MongoDB directly,
-      // avoiding the HTTP 431 header-size issue entirely.
-      window.location.href = `/success?name=${encodeURIComponent(name)}&meetingNotes=${encodeURIComponent(meetingNotes)}&ricefwNumber=${encodeURIComponent(ricefwNumber)}&wricef_type=${encodeURIComponent(wricef_type)}`;
+      // FIX (HTTP 431): name and meetingNotes (= full file text, potentially
+      // tens of KB after URL-encoding) have been removed from the URL entirely.
+      // The /success route now fetches them directly from MongoDB using
+      // ricefwNumber, so only the two small identifiers travel in the URL.
+      window.location.href = `/success?ricefwNumber=${encodeURIComponent(ricefwNumber)}&wricef_type=${encodeURIComponent(wricef_type)}`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
