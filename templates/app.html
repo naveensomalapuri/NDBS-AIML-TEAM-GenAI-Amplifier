@@ -462,6 +462,13 @@
       background: #9333ea;
     }
 
+    /* Submitting state for continue button */
+    .continue-btn.submitting {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: #7c3aed;
+    }
+
     /* Load Existing Button */
     .load-existing-btn {
       display: block;
@@ -818,7 +825,7 @@
 
     <!-- Continue Button -->
     <button id="continue-button" type="button" class="continue-btn" disabled>
-      <span>Continue</span>
+      <span id="continue-label">Continue</span>
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
       </svg>
@@ -904,10 +911,9 @@
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
       const continueButton = document.getElementById('continue-button');
 
-      if (customer && ricefwNumber && meetingNotes) {
-        continueButton.disabled = false;
-      } else {
-        continueButton.disabled = true;
+      // Only re-enable if not currently submitting
+      if (!continueButton.classList.contains('submitting')) {
+        continueButton.disabled = !(customer && ricefwNumber && meetingNotes);
       }
     }
 
@@ -1103,8 +1109,20 @@
       window.location.href = '/listofwricefs';
     });
 
+    // ─────────────────────────────────────────────
+    // FIX (duplicate creation): disable the button
+    // immediately on first click so rapid/accidental
+    // double-clicks cannot send two POST /add requests.
+    // The button is re-enabled if the save fails so the
+    // user can try again; it stays disabled on success
+    // because we navigate away anyway.
+    // ─────────────────────────────────────────────
     continueButton.addEventListener('click', async (e) => {
       e.preventDefault();
+
+      // Guard: ignore clicks while a submission is already in flight
+      if (continueButton.disabled || continueButton.classList.contains('submitting')) return;
+
       const customer = document.getElementById('customer').value.trim();
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
       const meetingNotes = document.getElementById('file-text').value.trim();
@@ -1114,20 +1132,37 @@
         return;
       }
 
+      // Lock the button and show a saving state
+      continueButton.disabled = true;
+      continueButton.classList.add('submitting');
+      document.getElementById('continue-label').textContent = 'Saving...';
+
       const savedSuccessfully = await saveToMongoDB();
+
       if (savedSuccessfully) {
+        // Stay disabled – we are about to navigate away
+        document.getElementById('continue-label').textContent = 'Redirecting...';
         setTimeout(() => {
           redirectToSuccess();
         }, 500);
+      } else {
+        // Save failed – restore button so user can retry
+        continueButton.disabled = false;
+        continueButton.classList.remove('submitting');
+        document.getElementById('continue-label').textContent = 'Continue';
       }
     });
 
     function redirectToSuccess() {
-      let name = document.getElementById("customer").value;
-      let meetingNotes = document.getElementById("file-text").value;
-      let ricefwNumber = document.getElementById("ricefw-number").value;
-      let wricef_type = document.getElementById("ricefw").value;
-      
+      const name = document.getElementById("customer").value;
+      const meetingNotes = document.getElementById("file-text").value;
+      const ricefwNumber = document.getElementById("ricefw-number").value;
+      const wricef_type = document.getElementById("ricefw").value;
+
+      // NOTE: meetingNotes is passed here only for the immediate /success page
+      // render.  It is NOT used when loading existing items from the list –
+      // those go through /view/<ricefw_number> which reads from MongoDB directly,
+      // avoiding the HTTP 431 header-size issue entirely.
       window.location.href = `/success?name=${encodeURIComponent(name)}&meetingNotes=${encodeURIComponent(meetingNotes)}&ricefwNumber=${encodeURIComponent(ricefwNumber)}&wricef_type=${encodeURIComponent(wricef_type)}`;
     }
 

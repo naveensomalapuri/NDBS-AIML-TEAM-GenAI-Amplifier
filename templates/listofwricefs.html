@@ -280,16 +280,6 @@
       border: 1px solid #e5e7eb;
     }
 
-    /* Loading State */
-    .loading-skeleton {
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
       .header-left {
@@ -362,10 +352,10 @@
     <div class="table-container">
       <!-- Controls Bar -->
       <div class="controls-bar">
-        <input 
-          type="text" 
-          id="search-input" 
-          class="search-input" 
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
           placeholder="🔍 Search by WRICEF Number or Customer Name..."
           onkeyup="filterTable()"
         />
@@ -375,6 +365,13 @@
       </div>
 
       <!-- Table -->
+      <!--
+        FIX (HTTP 431): Previously the View button passed name + meetingNotes
+        (the full uploaded file text) as URL query-params, which could be tens
+        of kilobytes after URL-encoding and blew past the 8 KB HTTP header
+        size limit.  Now the link is simply /view/<ricefw_number> and the
+        backend fetches everything it needs directly from MongoDB.
+      -->
       <div class="table-wrapper">
         <table id="wricef-table">
           <thead>
@@ -390,8 +387,7 @@
               <td>{{ item.ricefw_number }}</td>
               <td>{{ item.customer }}</td>
               <td>
-                <a href="/view/{{ item.ricefw_number }}?name={{ item.customer | urlencode }}&meetingNotes={{ item.fileText | urlencode | replace('%', '%25') }}&ricefwNumber={{ item.ricefw_number }}"
-                   class="view-button">
+                <a href="/view/{{ item.ricefw_number }}" class="view-button">
                   <span>👁️</span>
                   <span>View</span>
                 </a>
@@ -412,25 +408,23 @@
   </main>
 
   <script>
-    // Function to go to homepage
     function goToHomepage() {
       window.location.href = '/app';
     }
 
-    // Update item count
     function updateItemCount() {
       const tableBody = document.getElementById('table-body');
       const rows = tableBody.querySelectorAll('tr');
       const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
       const itemCount = document.getElementById('item-count');
-      
+
       if (rows.length === 0) {
         itemCount.textContent = 'No items';
         document.getElementById('empty-state').classList.add('show');
         document.getElementById('wricef-table').style.display = 'none';
       } else {
         itemCount.textContent = `${visibleRows.length} of ${rows.length} items`;
-        
+
         if (visibleRows.length === 0) {
           document.getElementById('empty-state').classList.add('show');
           document.getElementById('empty-state').querySelector('.empty-text').textContent = 'No matching items found';
@@ -443,39 +437,33 @@
       }
     }
 
-    // Filter table based on search input
     function filterTable() {
-      const searchInput = document.getElementById('search-input');
-      const filter = searchInput.value.toLowerCase();
-      const tableBody = document.getElementById('table-body');
-      const rows = tableBody.getElementsByTagName('tr');
+      const filter = document.getElementById('search-input').value.toLowerCase();
+      const rows = document.getElementById('table-body').getElementsByTagName('tr');
 
       for (let i = 0; i < rows.length; i++) {
         const ricefwNumber = rows[i].getElementsByTagName('td')[0];
         const customerName = rows[i].getElementsByTagName('td')[1];
-        
+
         if (ricefwNumber && customerName) {
           const ricefwText = ricefwNumber.textContent || ricefwNumber.innerText;
           const customerText = customerName.textContent || customerName.innerText;
-          
-          if (ricefwText.toLowerCase().indexOf(filter) > -1 || 
-              customerText.toLowerCase().indexOf(filter) > -1) {
-            rows[i].style.display = '';
-          } else {
-            rows[i].style.display = 'none';
-          }
+
+          rows[i].style.display =
+            (ricefwText.toLowerCase().includes(filter) || customerText.toLowerCase().includes(filter))
+              ? ''
+              : 'none';
         }
       }
-      
+
       updateItemCount();
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       updateItemCount();
-      
-      // Add keyboard shortcut for search (Ctrl/Cmd + K)
-      document.addEventListener('keydown', function(e) {
+
+      // Ctrl/Cmd + K focuses the search box
+      document.addEventListener('keydown', function (e) {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
           document.getElementById('search-input').focus();
