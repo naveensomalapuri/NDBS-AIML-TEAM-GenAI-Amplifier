@@ -120,6 +120,7 @@ async def view_item(request: Request, ricefw_number: str):
             "name": resume.get("customer", ""),
             "meetingNotes": resume.get("fileText", ""),
             "ricefw_number": ricefw_number,
+            "ricefwNumber": ricefw_number,   # camelCase — matches JS: const ricefwNumber = "{{ ricefwNumber }}"
             "resume": resume,
         },
     )

@@ -962,8 +962,11 @@
       }
     }
 
-    const params = new URLSearchParams(window.location.search);
-    const ricefwNumber = params.get('ricefwNumber');
+    // ricefwNumber is injected server-side by Jinja2 so it works for BOTH:
+    //   /success?ricefwNumber=...  (query-param flow)
+    //   /view/<ricefw_number>      (path-param flow, no query params)
+    // This avoids params.get('ricefwNumber') returning null on the /view route.
+    const ricefwNumber = "{{ ricefwNumber }}";
 
     // FIX (HTTP 431): customerName and decodedText are no longer passed via URL.
     // We fetch them from MongoDB using the lightweight /api/wricef_data endpoint.
