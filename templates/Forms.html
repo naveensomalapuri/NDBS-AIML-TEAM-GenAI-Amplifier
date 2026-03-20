@@ -915,10 +915,29 @@
     }
 
     const params = new URLSearchParams(window.location.search);
-    const customerName = params.get('name');
     const ricefwNumber = params.get('ricefwNumber');
-    const encodedText = params.get('meetingNotes');
-    const decodedText = encodedText ? decodeURIComponent(encodedText) : "";
+
+    // FIX (HTTP 431): customerName and decodedText are no longer passed via URL.
+    // We fetch them from MongoDB using the lightweight /api/wricef_data endpoint.
+    let customerName = "";
+    let decodedText = "";
+
+    async function loadWricefData() {
+      if (!ricefwNumber) return;
+      try {
+        const res = await fetch(`/api/wricef_data/${encodeURIComponent(ricefwNumber)}`);
+        if (res.ok) {
+          const data = await res.json();
+          customerName = data.customer || "";
+          decodedText = data.fileText ? decodeURIComponent(data.fileText) : "";
+        }
+      } catch (e) {
+        console.error("Failed to load WRICEF data:", e);
+      }
+    }
+
+    // Load data before any button clicks are processed
+    const wricefDataReady = loadWricefData();
 
     console.log('Customer:', customerName);
     console.log('RICEF Number:', ricefwNumber);
@@ -929,7 +948,8 @@
     });
 
     // Generate VOC
-    document.getElementById('generate-voc').addEventListener('click', () => {
+    document.getElementById('generate-voc').addEventListener('click', async () => {
+      await wricefDataReady;
       if (decodedText && customerName) {
         showButtonLoading('generate-voc');
         
@@ -971,7 +991,8 @@
     });
 
     // Generate ROC
-    document.getElementById('generate-roc').addEventListener('click', () => {
+    document.getElementById('generate-roc').addEventListener('click', async () => {
+      await wricefDataReady;
       if (decodedText && customerName) {
         showButtonLoading('generate-roc');
         
@@ -1013,7 +1034,8 @@
     });
 
     // Generate FD
-    document.getElementById('generate-fd').addEventListener('click', () => {
+    document.getElementById('generate-fd').addEventListener('click', async () => {
+      await wricefDataReady;
       if (decodedText && customerName) {
         showButtonLoading('generate-fd');
         
@@ -1055,7 +1077,8 @@
     });
 
     // Generate TD
-    document.getElementById('generate-td').addEventListener('click', () => {
+    document.getElementById('generate-td').addEventListener('click', async () => {
+      await wricefDataReady;
       if (decodedText && customerName) {
         showButtonLoading('generate-td');
         

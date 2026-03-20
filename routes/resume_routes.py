@@ -126,6 +126,23 @@ async def view_item(request: Request, ricefw_number: str):
 
 
 # ─────────────────────────────────────────────
+#  Lightweight data API used by WRICEF templates
+#  to fetch customer name and fileText without
+#  putting large content in the URL (HTTP 431 fix).
+# ─────────────────────────────────────────────
+
+@router.get("/api/wricef_data/{ricefw_number}")
+async def get_wricef_data(ricefw_number: str):
+    doc = collection.find_one(
+        {"ricefw_number": ricefw_number},
+        {"_id": 0, "customer": 1, "fileText": 1},
+    )
+    if not doc:
+        raise HTTPException(status_code=404, detail="RICEF not found")
+    return {"customer": doc.get("customer", ""), "fileText": doc.get("fileText", "")}
+
+
+# ─────────────────────────────────────────────
 #  List all WRICEFs
 # ─────────────────────────────────────────────
 
