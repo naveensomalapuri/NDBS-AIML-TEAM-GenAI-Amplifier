@@ -171,8 +171,6 @@ async def create_resume(
     client_name: str = Form(...),
     ricefwNumber: str = Form(...),
 ):
-    print(f"Received client_problem: {client_problem}")
-    print(f"Received client_name: {client_name}")
     print(f"Received ricefwNumber: {ricefwNumber}")
 
     resume = collection.find_one({"ricefw_number": ricefwNumber})
@@ -180,14 +178,25 @@ async def create_resume(
         raise HTTPException(status_code=404, detail="RICEF not found")
 
     wricef_type = resume["ricefw"]
-    print(f"Received wricefType: {wricef_type}")
+    print(f"wricefType: {wricef_type}")
 
-    generated_resume = generate_resume(client_problem, wricef_type)
+    # Always source fileText from MongoDB - frontend values may be empty
+    # since we removed them from the URL to fix the HTTP 431 issue.
+    file_text = urllib.parse.unquote(resume.get("fileText", ""))
+
+    # The frontend prefixes client_problem with the section name (VOC/ROC/FD/TD).
+    # Extract just that prefix and rebuild with the real file text from MongoDB.
+    prefix = client_problem.split(" ")[0] if client_problem else ""
+    actual_problem = f"{prefix} {file_text}".strip()
+
+    print(f"prefix: {prefix}, file_text length: {len(file_text)}")
+
+    generated_resume = generate_resume(actual_problem, wricef_type)
     print(f"Generated resume: {generated_resume}")
 
     new_field_data = {
         "generated_resume": generated_resume,
-        "client_problem": client_problem,
+        "client_problem": actual_problem,
     }
 
     result = collection.update_one(

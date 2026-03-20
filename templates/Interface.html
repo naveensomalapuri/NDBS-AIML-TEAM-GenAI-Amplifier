@@ -995,139 +995,119 @@
     });
 
     document.getElementById('generate-voc').addEventListener('click', async () => {
-      await wricefDataReady;
-      if (decodedText && customerName) {
-        showButtonLoading('generate-voc');
-        
-        const formData = new URLSearchParams();
-        formData.append('client_problem', `VOC ${decodedText}`);
-        formData.append('client_name', customerName);
-        formData.append('ricefwNumber', ricefwNumber);
-        
-        fetch('/generate_response', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString(),
+      showButtonLoading('generate-voc');
+      
+      const formData = new URLSearchParams();
+      formData.append('client_problem', `VOC ${decodedText}`);
+      formData.append('client_name', customerName);
+      formData.append('ricefwNumber', ricefwNumber);
+      
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString(),
+      })
+        .then((response) => {
+          hideButtonLoading('generate-voc');
+          if (response.ok) {
+            showNotification('VOC generated successfully!', 'success');
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            showNotification('Failed to Generate VOC.', 'error');
+          }
+          return response.json();
         })
-          .then((response) => {
-            hideButtonLoading('generate-voc');
-            if (response.ok) {
-              showNotification('VOC generated successfully!', 'success');
-              setTimeout(() => window.location.reload(), 1500);
-            } else {
-              showNotification('Failed to Generate VOC.', 'error');
-            }
-            return response.json();
-          })
-          .catch((error) => {
-            hideButtonLoading('generate-voc');
-            showNotification('Please wait a moment, VOC is being generated...', 'info');
-          });
-      } else {
-        showNotification('Please ensure both file content and customer name are available.', 'error');
-      }
+        .catch((error) => {
+          hideButtonLoading('generate-voc');
+          showNotification('Please wait a moment, VOC is being generated...', 'info');
+        });
     });
 
     document.getElementById('generate-roc').addEventListener('click', async () => {
-      await wricefDataReady;
-      if (decodedText && customerName) {
-        showButtonLoading('generate-roc');
-        
-        const formData = new URLSearchParams();
-        formData.append('client_problem', `ROC ${decodedText}`);
-        formData.append('client_name', customerName);
-        formData.append('ricefwNumber', ricefwNumber);
-        
-        fetch('/generate_response', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString(),
+      showButtonLoading('generate-roc');
+      
+      const formData = new URLSearchParams();
+      formData.append('client_problem', `ROC ${decodedText}`);
+      formData.append('client_name', customerName);
+      formData.append('ricefwNumber', ricefwNumber);
+      
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString(),
+      })
+        .then((response) => {
+          hideButtonLoading('generate-roc');
+          if (response.ok) {
+            showNotification('ROC generated successfully!', 'success');
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            showNotification('Failed to Generate ROC.', 'error');
+          }
+          return response.json();
         })
-          .then((response) => {
-            hideButtonLoading('generate-roc');
-            if (response.ok) {
-              showNotification('ROC generated successfully!', 'success');
-              setTimeout(() => window.location.reload(), 1500);
-            } else {
-              showNotification('Failed to Generate ROC.', 'error');
-            }
-            return response.json();
-          })
-          .catch((error) => {
-            hideButtonLoading('generate-roc');
-            showNotification('Please wait a moment, ROC is being generated...', 'info');
-          });
-      } else {
-        showNotification('Please ensure both file content and customer name are available.', 'error');
-      }
+        .catch((error) => {
+          hideButtonLoading('generate-roc');
+          showNotification('Please wait a moment, ROC is being generated...', 'info');
+        });
     });
 
     document.getElementById('generate-fd').addEventListener('click', async () => {
-      await wricefDataReady;
-      if (decodedText && customerName) {
-        showButtonLoading('generate-fd');
-        
-        const formData = new URLSearchParams();
-        formData.append('client_problem', `FD ${decodedText}`);
-        formData.append('client_name', customerName);
-        formData.append('ricefwNumber', ricefwNumber);
-        
-        fetch('/generate_response', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString(),
+      showButtonLoading('generate-fd');
+      
+      const formData = new URLSearchParams();
+      formData.append('client_problem', `FD ${decodedText}`);
+      formData.append('client_name', customerName);
+      formData.append('ricefwNumber', ricefwNumber);
+      
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString(),
+      })
+        .then((response) => {
+          hideButtonLoading('generate-fd');
+          if (response.ok) {
+            showNotification('FD generated successfully!', 'success');
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            showNotification('Failed to Generate FD.', 'error');
+          }
+          return response.json();
         })
-          .then((response) => {
-            hideButtonLoading('generate-fd');
-            if (response.ok) {
-              showNotification('FD generated successfully!', 'success');
-              setTimeout(() => window.location.reload(), 1500);
-            } else {
-              showNotification('Failed to Generate FD.', 'error');
-            }
-            return response.json();
-          })
-          .catch((error) => {
-            hideButtonLoading('generate-fd');
-            showNotification('Please wait a moment, FD is being generated...', 'info');
-          });
-      } else {
-        showNotification('Please ensure both file content and customer name are available.', 'error');
-      }
+        .catch((error) => {
+          hideButtonLoading('generate-fd');
+          showNotification('Please wait a moment, FD is being generated...', 'info');
+        });
     });
 
     document.getElementById('generate-td').addEventListener('click', async () => {
-      await wricefDataReady;
-      if (decodedText && customerName) {
-        showButtonLoading('generate-td');
-        
-        const formData = new URLSearchParams();
-        formData.append('client_problem', `TD ${decodedText}`);
-        formData.append('client_name', customerName);
-        formData.append('ricefwNumber', ricefwNumber);
-        
-        fetch('/generate_response', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString(),
+      showButtonLoading('generate-td');
+      
+      const formData = new URLSearchParams();
+      formData.append('client_problem', `TD ${decodedText}`);
+      formData.append('client_name', customerName);
+      formData.append('ricefwNumber', ricefwNumber);
+      
+      fetch('/generate_response', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString(),
+      })
+        .then((response) => {
+          hideButtonLoading('generate-td');
+          if (response.ok) {
+            showNotification('TD generated successfully!', 'success');
+            setTimeout(() => window.location.reload(), 1500);
+          } else {
+            showNotification('Failed to Generate TD.', 'error');
+          }
+          return response.json();
         })
-          .then((response) => {
-            hideButtonLoading('generate-td');
-            if (response.ok) {
-              showNotification('TD generated successfully!', 'success');
-              setTimeout(() => window.location.reload(), 1500);
-            } else {
-              showNotification('Failed to Generate TD.', 'error');
-            }
-            return response.json();
-          })
-          .catch((error) => {
-            hideButtonLoading('generate-td');
-            showNotification('Please wait a moment, TD is being generated...', 'info');
-          });
-      } else {
-        showNotification('Please ensure both file content and customer name are available.', 'error');
-      }
+        .catch((error) => {
+          hideButtonLoading('generate-td');
+          showNotification('Please wait a moment, TD is being generated...', 'info');
+        });
     });
 
     async function downloadResume() {
@@ -1219,40 +1199,36 @@
     }
 
     function regenerateSection(sectionName) {
-      if (decodedText && customerName && ricefwNumber) {
-        const section = document.querySelector(`[data-section-name="${sectionName}"]`);
-        const regenerateBtn = section.querySelector('.regenerate-button');
-        
-        showRegenerateLoading(regenerateBtn);
-        
-        const formData = new URLSearchParams();
-        formData.append('client_name', customerName);
-        formData.append('meetingNotes', decodedText);
-        formData.append('section_index', sectionName);
-        formData.append('ricefwNumber', ricefwNumber);
+      const section = document.querySelector(`[data-section-name="${sectionName}"]`);
+      const regenerateBtn = section.querySelector('.regenerate-button');
+      
+      showRegenerateLoading(regenerateBtn);
+      
+      const formData = new URLSearchParams();
+      formData.append('client_name', customerName);
+      formData.append('meetingNotes', decodedText);
+      formData.append('section_index', sectionName);
+      formData.append('ricefwNumber', ricefwNumber);
 
-        fetch('/regeneration', { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
-        })
-        .then(response => {
-          hideRegenerateLoading(regenerateBtn);
-          if (response.ok) {
-            showNotification('Section ' + sectionName + ' regenerated successfully!', 'success');
-            setTimeout(() => window.location.reload(), 1500);
-          } else {
-            showNotification('Failed to regenerate section ' + sectionName, 'error');
-          }
-          return response.json();
-        })
-        .catch(error => {
-          hideRegenerateLoading(regenerateBtn);
-          showNotification('Please wait a moment, section is being regenerated...', 'info');
-        });
-      } else {
-        showNotification('Please ensure both file content and customer name are available.', 'error');
-      }
+      fetch('/regeneration', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+      })
+      .then(response => {
+        hideRegenerateLoading(regenerateBtn);
+        if (response.ok) {
+          showNotification('Section ' + sectionName + ' regenerated successfully!', 'success');
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          showNotification('Failed to regenerate section ' + sectionName, 'error');
+        }
+        return response.json();
+      })
+      .catch(error => {
+        hideRegenerateLoading(regenerateBtn);
+        showNotification('Please wait a moment, section is being regenerated...', 'info');
+      });
     }
   </script>
 </body>
