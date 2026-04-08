@@ -2,8 +2,10 @@ import re
 import logging
 import urllib.parse
 import io
+import zipfile
+import xml.etree.ElementTree as ET
 
-from fastapi import APIRouter, HTTPException, Request, Form, Response
+from fastapi import APIRouter, HTTPException, Request, Form, Response, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse, FileResponse, HTMLResponse, JSONResponse
 from pydantic import BaseModel
@@ -53,6 +55,49 @@ async def get_app(request: Request):
 @router.get("/app", response_class=HTMLResponse)
 async def read_app(request: Request):
     return templates.TemplateResponse("app.html", {"request": request})
+
+
+@router.post("/parse_file")
+async def parse_file(file: UploadFile = File(...)):
+    filename = file.filename or ""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+
+    allowed = {"txt", "vtt", "docx"}
+    if ext not in allowed:
+        raise HTTPException(status_code=400, detail=f"Unsupported file type '.{ext}'. Allowed: {', '.join(sorted(allowed))}")
+
+    content = await file.read()
+
+    if ext in ("txt", "vtt"):
+        text = content.decode("utf-8", errors="replace")
+        if ext == "vtt":
+            lines = []
+            for line in text.splitlines():
+                line = line.strip()
+                if not line or line.startswith("WEBVTT") or line.startswith("NOTE"):
+                    continue
+                if "-->" in line:
+                    continue
+                if re.match(r"^\d+$", line):
+                    continue
+                lines.append(line)
+            text = " ".join(lines)
+    elif ext == "docx":
+        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+        with zipfile.ZipFile(io.BytesIO(content)) as z:
+            with z.open("word/document.xml") as f:
+                tree = ET.parse(f)
+        paragraphs = []
+        for para in tree.findall(".//w:p", ns):
+            parts = [node.text or "" for node in para.findall(".//w:t", ns)]
+            line = "".join(parts).strip()
+            if line:
+                paragraphs.append(line)
+        text = "\n".join(paragraphs)
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported file type")
+
+    return {"text": text}
 
 
 @router.post("/add")

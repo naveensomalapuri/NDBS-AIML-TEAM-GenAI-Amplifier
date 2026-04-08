@@ -8,25 +8,30 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: #ffffff;
-      min-height: 100vh;
       color: #1a202c;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header - White with secondary color accents */
     header.modern-header {
       background: #ffffff;
       border-bottom: 3px solid #14b8a6;
-      padding: 1rem 2rem;
+      padding: 0.75rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky;
-      top: 0;
       z-index: 100;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      flex-shrink: 0;
     }
 
     .header-left {
@@ -168,42 +173,58 @@
     .alert-banner {
       background: #fed7aa;
       border-left: 4px solid #fb923c;
-      padding: 1rem 1.5rem;
-      margin: 1.5rem auto;
-      border-radius: 12px;
-      max-width: 1400px;
+      padding: 0.6rem 1.5rem;
+      margin: 0;
+      border-radius: 0;
       color: #7c2d12;
       box-shadow: 0 2px 8px rgba(251, 146, 60, 0.2);
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex-shrink: 0;
     }
 
     /* Main Container - White background */
     .main-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 1rem 2rem;
       background: white;
+      min-height: 0;
     }
 
     /* Carousel Container */
     .carousel-wrapper {
-      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
       background: white;
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      min-height: 0;
+    }
+
+    .carousel-container-outer {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
     }
 
     .carousel-container {
       display: flex;
+      height: 100%;
       transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .carousel-slide {
       min-width: 100%;
-      padding: 2rem;
+      width: 100%;
+      padding: 1.25rem 2rem;
+      overflow-y: auto;
+      height: 100%;
     }
 
     /* Carousel Navigation */
@@ -211,10 +232,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 2rem;
+      padding: 0.875rem 2rem;
       background: #f9fafb;
       border-top: 2px solid #e5e7eb;
       gap: 1rem;
+      flex-shrink: 0;
     }
 
     .carousel-dots {
@@ -302,10 +324,10 @@
     .upload-zone {
       border: 3px dashed #d1d5db;
       border-radius: 16px;
-      padding: 2rem;
+      padding: 1.25rem;
       text-align: center;
       background: #f9fafb;
-      min-height: 240px;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -341,7 +363,7 @@
     /* Textarea */
     .modern-textarea {
       width: 100%;
-      min-height: 240px;
+      min-height: 0;
       padding: 1rem;
       border-radius: 12px;
       border: 2px solid #e5e7eb;
@@ -384,8 +406,19 @@
     .grid-2col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      align-items: stretch;
+    }
+
+    .grid-2col > div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .grid-2col > div .modern-textarea,
+    .grid-2col > div .upload-zone {
+      flex: 1;
     }
 
     @media (max-width: 968px) {
@@ -426,21 +459,17 @@
 
     /* Continue Button - Lavender */
     .continue-btn {
-      position: fixed;
-      right: 2rem;
-      bottom: 2rem;
       background: #a78bfa;
       color: white;
       border: none;
-      padding: 1rem 2rem;
-      border-radius: 50px;
-      font-weight: 700;
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 600;
       font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+      box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
       cursor: not-allowed;
       opacity: 0.5;
       transition: all 0.3s ease;
-      z-index: 60;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -474,7 +503,7 @@
       display: block;
       width: 100%;
       max-width: 400px;
-      margin: 2rem auto 0;
+      margin: 1rem auto 0;
       padding: 1rem 1.5rem;
       border-radius: 14px;
       border: 2px solid #e5e7eb;
@@ -649,9 +678,10 @@
 
   <!-- Main Content -->
   <main class="main-container">
-    <form action="/add" method="post" id="mainForm">
+    <form action="/add" method="post" id="mainForm" style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;">
       <!-- Carousel -->
       <div class="carousel-wrapper">
+        <div class="carousel-container-outer">
         <div class="carousel-container" id="carousel-container">
           
           <!-- Slide 1: Home -->
@@ -671,10 +701,10 @@
                 <div id="drop-zone" class="upload-zone" role="button" tabindex="0">
                   <div class="upload-icon">📁</div>
                   <p id="drop-zone-text" style="margin-bottom: 0.5rem; color: #374151; font-weight: 500;">
-                    Drag & drop your meeting notes (.txt) file here, or click to upload
+                    Drag & drop your Teams transcript or meeting notes here, or click to upload
                   </p>
-                  <p style="color: #6b7280; font-size: 0.875rem;">Supported format: TXT only</p>
-                  <input id="file-input" type="file" class="hidden" accept=".txt" />
+                  <p style="color: #6b7280; font-size: 0.875rem;">Supported formats: TXT, VTT (Teams transcript), DOCX</p>
+                  <input id="file-input" type="file" class="hidden" accept=".txt,.vtt,.docx" />
                   <div id="notification" class="notification-msg"></div>
                 </div>
                 <div id="fileList"></div>
@@ -801,6 +831,7 @@
           </div>
 
         </div>
+        </div>
 
         <!-- Carousel Navigation -->
         <div class="carousel-nav">
@@ -817,19 +848,18 @@
           <button type="button" id="carousel-next" class="carousel-btn carousel-btn-next" disabled>
             Next →
           </button>
+
+          <button id="continue-button" type="button" class="continue-btn" disabled style="display:none;">
+            <span id="continue-label">Continue</span>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10" style="width:1.1rem;height:1.1rem;">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+          </button>
         </div>
       </div>
 
       <input type="hidden" name="fileText" id="file-text">
     </form>
-
-    <!-- Continue Button -->
-    <button id="continue-button" type="button" class="continue-btn" disabled>
-      <span id="continue-label">Continue</span>
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-      </svg>
-    </button>
   </main>
 
   <script>
@@ -880,12 +910,17 @@
 
     function updateCarousel() {
       carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
-      
+
       carouselDots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentSlide);
       });
 
       carouselPrev.disabled = currentSlide === 0;
+
+      const isLastSlide = currentSlide === 2;
+      carouselNext.style.display = isLastSlide ? 'none' : '';
+      document.getElementById('continue-button').style.display = isLastSlide ? 'flex' : 'none';
+
       updateNextButton();
     }
 
@@ -988,7 +1023,7 @@
     function enableDropZone() {
       dropZone.classList.remove('disabled');
       const p = document.getElementById('drop-zone-text');
-      if (p) p.textContent = "Drag & drop your meeting notes (.txt) file here, or click to upload";
+      if (p) p.textContent = "Drag & drop your Teams transcript or meeting notes here, or click to upload";
     }
 
     dropZone.addEventListener('click', () => {
@@ -1040,18 +1075,35 @@
 
     async function handleTxtFile(file) {
       if (!file) return;
-      if (file && file.type === 'text/plain') {
-        const text = await file.text();
-        fileContentInput.value = encodeURIComponent(text);
+      const ext = file.name.split('.').pop().toLowerCase();
+      const allowed = ['txt', 'vtt', 'docx'];
+      if (!allowed.includes(ext)) {
+        showNotification('Unsupported file type. Please upload a TXT, VTT, or DOCX file.', 'error');
+        return;
+      }
+
+      showNotification('Parsing file...', 'info');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await fetch('/parse_file', { method: 'POST', body: formData });
+        if (!response.ok) {
+          const err = await response.json();
+          showNotification(err.detail || 'Failed to parse file.', 'error');
+          return;
+        }
+        const result = await response.json();
+        fileContentInput.value = encodeURIComponent(result.text);
         isFileInputActive = true;
         isTextInputActive = false;
         disableTextInput();
         textInput.value = '';
-        showNotification('File Uploaded Successfully!', 'success');
+        showNotification('File parsed successfully!', 'success');
         renderFileList(file.name);
         updateNextButton();
-      } else {
-        showNotification('Please upload a valid .txt file.', 'error');
+      } catch (e) {
+        showNotification('Network error while parsing file.', 'error');
       }
     }
 
