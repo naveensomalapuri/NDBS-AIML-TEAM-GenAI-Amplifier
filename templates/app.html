@@ -748,8 +748,8 @@
               </div>
 
               <div>
-                <label for="specification" class="field-label">Specification Name:</label>
-                <input type="text" id="specification" name="specification" class="modern-input" placeholder="Enter Specification Name" />
+                <label for="specification" class="field-label">Specification Name: <span class="required">*</span></label>
+                <input type="text" id="specification" name="specification" class="modern-input" placeholder="Enter Specification Name" required />
               </div>
 
               <div>
@@ -905,7 +905,7 @@
     }
 
     function openFeedbackForm() {
-      window.open('https://forms.office.com/e/DHhgJQsLZT', '_blank');
+      window.open('https://forms.office.com/pages/responsepage.aspx?id=Gd7ERvwPVEyqhu5ydK-p1ypLotnXSFBLsOBkdbM0WSpUN0s4QjI4V1VSVlhUWkU0VDE4VzZDUjBORy4u&route=shorturl', '_blank');
     }
 
     function updateCarousel() {
@@ -928,11 +928,12 @@
       const meetingNotes = document.getElementById('file-text').value.trim();
       const customer = document.getElementById('customer').value.trim();
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+      const specification = document.getElementById('specification').value.trim();
 
       if (currentSlide === 0) {
         carouselNext.disabled = !meetingNotes;
       } else if (currentSlide === 1) {
-        carouselNext.disabled = !(customer && ricefwNumber);
+        carouselNext.disabled = !(customer && ricefwNumber && specification);
       } else {
         carouselNext.disabled = true;
       }
@@ -944,11 +945,12 @@
       const meetingNotes = document.getElementById('file-text').value.trim();
       const customer = document.getElementById('customer').value.trim();
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+      const specification = document.getElementById('specification').value.trim();
       const continueButton = document.getElementById('continue-button');
 
       // Only re-enable if not currently submitting
       if (!continueButton.classList.contains('submitting')) {
-        continueButton.disabled = !(customer && ricefwNumber && meetingNotes);
+        continueButton.disabled = !(customer && ricefwNumber && specification && meetingNotes);
       }
     }
 
@@ -972,10 +974,11 @@
         const meetingNotes = document.getElementById('file-text').value.trim();
         const customer = document.getElementById('customer').value.trim();
         const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+        const specification = document.getElementById('specification').value.trim();
 
         if (index === 0 || 
             (index === 1 && meetingNotes) || 
-            (index === 2 && meetingNotes && customer && ricefwNumber)) {
+            (index === 2 && meetingNotes && customer && ricefwNumber && specification)) {
           currentSlide = index;
           updateCarousel();
         }
@@ -1123,8 +1126,10 @@
 
     const custElem = document.getElementById('customer');
     const ricefwElem = document.getElementById('ricefw-number');
+    const specElem = document.getElementById('specification');
     if (custElem) custElem.addEventListener('input', updateNextButton);
     if (ricefwElem) ricefwElem.addEventListener('input', updateNextButton);
+    if (specElem) specElem.addEventListener('input', updateNextButton);
 
     async function saveToMongoDB() {
       const formData = new FormData(document.getElementById('mainForm'));
@@ -1177,9 +1182,10 @@
 
       const customer = document.getElementById('customer').value.trim();
       const ricefwNumber = document.getElementById('ricefw-number').value.trim();
+      const specification = document.getElementById('specification').value.trim();
       const meetingNotes = document.getElementById('file-text').value.trim();
 
-      if (!customer || !ricefwNumber || !meetingNotes) {
+      if (!customer || !ricefwNumber || !specification || !meetingNotes) {
         showNotification('Please fill in all required fields and ensure meeting notes are entered', 'error');
         return;
       }

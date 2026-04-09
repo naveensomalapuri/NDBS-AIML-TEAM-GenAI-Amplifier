@@ -26,7 +26,7 @@ collection = db["WRICEF_Collection"]
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
-RICEFW_NUMBER_PATTERN = re.compile(r'^[A-Za-z0-9_\-]{1,50}$')
+RICEFW_NUMBER_PATTERN = re.compile(r'^.+$')
 MAX_GENERATED_RESUME_ENTRIES = 20
 
 
@@ -121,6 +121,7 @@ async def add_item(form_data: Formdata):
 
 @router.get("/success")
 async def success_page(request: Request, ricefwNumber: str, wricef_type: str):
+    ricefwNumber = urllib.parse.unquote(ricefwNumber)
     ricefwNumber = _validate_ricefw_number(ricefwNumber)
     _validate_wricef_type(wricef_type)
     resume = await collection.find_one({"ricefw_number": ricefwNumber})
@@ -138,8 +139,9 @@ async def success_page(request: Request, ricefwNumber: str, wricef_type: str):
     )
 
 
-@router.get("/view/{ricefw_number}", response_class=HTMLResponse)
+@router.get("/view/{ricefw_number:path}", response_class=HTMLResponse)
 async def view_item(request: Request, ricefw_number: str):
+    ricefw_number = urllib.parse.unquote(ricefw_number)
     ricefw_number = _validate_ricefw_number(ricefw_number)
     resume = await collection.find_one({"ricefw_number": ricefw_number})
     if not resume:
@@ -163,16 +165,17 @@ async def view_item(request: Request, ricefw_number: str):
     )
 
 
-@router.get("/api/wricef_data/{ricefw_number}")
+@router.get("/api/wricef_data/{ricefw_number:path}")
 async def get_wricef_data(ricefw_number: str):
+    ricefw_number = urllib.parse.unquote(ricefw_number)
     ricefw_number = _validate_ricefw_number(ricefw_number)
     doc = await collection.find_one(
         {"ricefw_number": ricefw_number},
-        {"_id": 0, "customer": 1, "fileText": 1},
+        {"_id": 0, "customer": 1, "fileText": 1, "specification": 1},
     )
     if not doc:
         raise HTTPException(status_code=404, detail="RICEF not found")
-    return {"customer": doc.get("customer", ""), "fileText": doc.get("fileText", "")}
+    return {"customer": doc.get("customer", ""), "fileText": doc.get("fileText", ""), "specification": doc.get("specification", "")}
 
 
 @router.get("/listofwricefs")
@@ -257,8 +260,9 @@ async def get_document_by_customer(ricefw_number: str):
     return await collection.find_one({"ricefw_number": ricefw_number})
 
 
-@router.get("/resume_download/{ricefw_number}")
+@router.get("/resume_download/{ricefw_number:path}")
 async def download_pdf(ricefw_number: str):
+    ricefw_number = urllib.parse.unquote(ricefw_number)
     document = await get_document_by_customer(ricefw_number)
     if not document:
         raise HTTPException(status_code=404, detail="RICEF not found")
@@ -278,7 +282,7 @@ async def download_pdf(ricefw_number: str):
         return Response(
             byte_io.read(),
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            headers={"Content-Disposition": f"attachment; filename=RICEF_{ricefw_number}.docx"},
+            headers={"Content-Disposition": f"attachment; filename={document.get('specification', ricefw_number) or ricefw_number}.docx"},
         )
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail=f"Template file '{template_path}' not found")
@@ -341,6 +345,16 @@ async def update_customer_data(request: Request, update_data: UpdateData):
 
     result = await collection.update_one({"_id": document["_id"]}, pipeline)
     return {"success": True, "modified_count": result.modified_count}
+
+
+@router.delete("/delete/{ricefw_number:path}")
+async def delete_wricef(ricefw_number: str):
+    ricefw_number = urllib.parse.unquote(ricefw_number)
+    ricefw_number = _validate_ricefw_number(ricefw_number)
+    result = await collection.delete_one({"ricefw_number": ricefw_number})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="RICEF not found")
+    return {"success": True}
 
 
 @router.post("/regeneration")

@@ -959,7 +959,8 @@
     //   /success?ricefwNumber=...  (query-param flow)
     //   /view/<ricefw_number>      (path-param flow, no query params)
     // This avoids params.get('ricefwNumber') returning null on the /view route.
-    const ricefwNumber = "{{ ricefwNumber }}";
+    const ricefwNumber = {{ ricefwNumber | tojson }};
+    const specificationName = {{ (resume.specification or ricefwNumber) | tojson }};
 
     // FIX (HTTP 431): customerName and decodedText are no longer passed via URL.
     // We fetch them from MongoDB using the lightweight /api/wricef_data endpoint.
@@ -1109,14 +1110,14 @@
         return;
       }
       try {
-        const response = await fetch(`/resume_download/${ricefwNumber}`);
+        const response = await fetch(`/resume_download/${encodeURIComponent(ricefwNumber)}`);
         if (!response.ok) {
           throw new Error(`Failed to download resume: ${response.statusText}`);
         }
         const blob = await response.blob();
         const downloadLink = document.createElement('a');
         downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = `RICEF_${ricefwNumber}.docx`;
+        downloadLink.download = `${specificationName}.docx`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);

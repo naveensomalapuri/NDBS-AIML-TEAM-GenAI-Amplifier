@@ -214,6 +214,39 @@
       transform: translateY(0);
     }
 
+    /* Delete Button */
+    .delete-button {
+      background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+      color: white;
+      padding: 0.625rem 1.5rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 2px 8px rgba(248, 113, 113, 0.3);
+      font-size: 0.875rem;
+    }
+
+    .delete-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(248, 113, 113, 0.4);
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    }
+
+    .delete-button:active {
+      transform: translateY(0);
+    }
+
+    .action-buttons {
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
     /* Empty State */
     .empty-state {
       text-align: center;
@@ -387,10 +420,16 @@
               <td>{{ item.ricefw_number }}</td>
               <td>{{ item.customer }}</td>
               <td>
-                <a href="/view/{{ item.ricefw_number }}" class="view-button">
-                  <span>👁️</span>
-                  <span>View</span>
-                </a>
+                <div class="action-buttons">
+                  <a href="/view/{{ item.ricefw_number }}" class="view-button">
+                    <span>👁️</span>
+                    <span>View</span>
+                  </a>
+                  <button class="delete-button" onclick="deleteWricef('{{ item.ricefw_number }}', this)">
+                    <span>🗑️</span>
+                    <span>Delete</span>
+                  </button>
+                </div>
               </td>
             </tr>
             {% endfor %}
@@ -457,6 +496,31 @@
       }
 
       updateItemCount();
+    }
+
+    async function deleteWricef(ricefwNumber, btn) {
+      if (!confirm(`Are you sure you want to delete "${ricefwNumber}"? This action cannot be undone.`)) return;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>⏳</span><span>Deleting...</span>';
+
+      try {
+        const response = await fetch(`/delete/${encodeURIComponent(ricefwNumber)}`, { method: 'DELETE' });
+        if (response.ok) {
+          const row = btn.closest('tr');
+          row.remove();
+          updateItemCount();
+        } else {
+          const data = await response.json();
+          alert(`Failed to delete: ${data.detail || 'Unknown error'}`);
+          btn.disabled = false;
+          btn.innerHTML = '<span>🗑️</span><span>Delete</span>';
+        }
+      } catch (e) {
+        alert('Network error. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<span>🗑️</span><span>Delete</span>';
+      }
     }
 
     document.addEventListener('DOMContentLoaded', function () {

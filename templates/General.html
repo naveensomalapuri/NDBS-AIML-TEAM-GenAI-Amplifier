@@ -683,14 +683,18 @@ async function downloadResume() {
     return;
   }
   try {
-    const response = await fetch(`/resume_download/${ricefwNumber}`);
+    const metaRes = await fetch(`/api/wricef_data/${encodeURIComponent(ricefwNumber)}`);
+    const meta = metaRes.ok ? await metaRes.json() : {};
+    const fileName = (meta.specification || ricefwNumber) + '.docx';
+
+    const response = await fetch(`/resume_download/${encodeURIComponent(ricefwNumber)}`);
     if (!response.ok) {
       throw new Error(`Failed to download resume: ${response.statusText}`);
     }
     const blob = await response.blob();
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `RICEF_${ricefwNumber}.docx`;
+    downloadLink.download = fileName;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
